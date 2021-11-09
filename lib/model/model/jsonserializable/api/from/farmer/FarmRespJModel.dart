@@ -10,6 +10,7 @@ class FarmRespJModel {
 
   //layout
   int? lv_index;
+  int? farmer;
 
   FarmRespJModel() {}
   factory FarmRespJModel.fromJson(Map<String, dynamic> json) =>

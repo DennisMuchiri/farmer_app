@@ -11,7 +11,8 @@ FarmRespJModel _$FarmRespJModelFromJson(Map<String, dynamic> json) =>
       ..id = json['id'] as int?
       ..farm_name = json['farm_name'] as String?
       ..farm_size = json['farm_size'] as String?
-      ..lv_index = json['lv_index'] as int?;
+      ..lv_index = json['lv_index'] as int?
+      ..farmer = json['farmer'] as int?;
 
 Map<String, dynamic> _$FarmRespJModelToJson(FarmRespJModel instance) =>
     <String, dynamic>{
@@ -19,4 +20,5 @@ Map<String, dynamic> _$FarmRespJModelToJson(FarmRespJModel instance) =>
       'farm_name': instance.farm_name,
       'farm_size': instance.farm_size,
       'lv_index': instance.lv_index,
+      'farmer': instance.farmer,
     };

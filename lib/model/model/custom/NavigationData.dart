@@ -6,6 +6,8 @@ class NavigationData {
   bool? isShow;
   ScreenIndex? screenIndex;
   bool? isInBackPressed;
+  bool? isValid;
+  String? message;
 
   NavigationData() {}
 }

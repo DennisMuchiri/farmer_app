@@ -1,4 +1,6 @@
+import 'package:farmer_app/model/model/jsonserializable/api/from/farmer/FarmRespJModel.dart';
 import 'package:farmer_app/model/model/jsonserializable/api/from/farmer/FarmerRespJModel.dart';
+import 'package:farmer_app/model/repository/local/db/farmers/FarmDao.dart';
 import 'package:flutter/material.dart';
 import 'package:json_store/json_store.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -16,7 +18,16 @@ Future<void> insertBatch_FarmerRespJModel(
       batch: batch,
       encrypt: true,
     );
+    //set farms for farmer
+    List<FarmRespJModel>? farmsforfarmer = farmr.farms;
+    if (farmsforfarmer != null && farmsforfarmer.isNotEmpty) {
+      for (FarmRespJModel farm in farmsforfarmer) {
+        farm.farmer = farmr.id;
+      }
+      insertBatch_FarmRespJModel(farmsforfarmer);
+    }
   });
+
   return await JsonStore().commitBatch(batch);
 }
 

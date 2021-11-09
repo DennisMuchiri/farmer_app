@@ -3,10 +3,11 @@ import 'package:farmer_app/model/model/jsonserializable/api/from/farmer/FarmResp
 import 'package:farmer_app/model/model/jsonserializable/api/from/farmer/FarmerRespJModel.dart';
 import 'package:farmer_app/model/repository/remote/chopper/functions/fetch/fetch_farmers.dart';
 import 'package:farmer_app/utils/functions/common_functions.dart';
-import 'package:farmer_app/utils/functions/common_widgets.dart';
 import 'package:farmer_app/utils/statics/farmer_app_static_params.dart';
 import 'package:farmer_app/utils/themes/farmer_app_theme.dart';
+import 'package:farmer_app/view/common/common_widgets.dart';
 import 'package:farmer_app/view/custom/title/CustomTitleView.dart';
+import 'package:farmer_app/view/dialogs/AddFarmDialog.dart';
 import 'package:farmer_app/view/fragments/farmer/listitems/FarmListItem.dart';
 import 'package:farmer_app/view/fragments/farmer/listitems/FarmerListItem.dart';
 import 'package:farmer_app/view_model/bloc/farmers/bloc/farmer_respjmodel_bloc.dart';
@@ -108,10 +109,20 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
     _setUpData(context);
   }
 
+  @override
+  void dispose() {
+    if (_animationController != null) {
+      _animationController?.dispose();
+    }
+    super.dispose();
+  }
+
   //AFTER FIRST LAYOUT FUNCTIONS
   _setUpData(BuildContext context) async {
     //load data
-    _farmListVM?.fetchFarmsFromFarm(widget.farmerRespJModel);
+    if (widget.farmerRespJModel.id != null) {
+      _farmListVM?.fetchFarmsFromFarmer(widget.farmerRespJModel.id!);
+    }
     //end of load data
   }
   //END OF AFTER FIRST LAYOUT FUNCTIONS
@@ -176,111 +187,175 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
           } else {
             _animationController!.forward();
             return Theme(
-              data: ThemeData(primaryColor: FarmerAppTheme.lma_purple),
-              child: SmartRefresher(
-                onRefresh: () async {
-                  _refreshController.refreshCompleted();
-                },
-                enablePullUp: true,
-                onLoading: () async {
-                  _refreshController.loadComplete();
-                },
-                controller: _refreshController,
-                enablePullDown: true,
-                header: WaterDropMaterialHeader(
-                    backgroundColor: FarmerAppTheme.white,
-                    color: FarmerAppTheme.lma_purple,
-                    distance: 30),
-                footer: ClassicFooter(
-                  loadStyle: LoadStyle.ShowWhenLoading,
-                  textStyle: TextStyle(
-                    fontFamily: FarmerAppTheme.font_AvenirLTStd_Book,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 13,
-                    letterSpacing: -0.2,
-                    color: FarmerAppTheme.grey,
+                data: ThemeData(primaryColor: FarmerAppTheme.lma_purple),
+                child: SmartRefresher(
+                  onRefresh: () async {
+                    _refreshController.refreshCompleted();
+                  },
+                  enablePullUp: true,
+                  onLoading: () async {
+                    _refreshController.loadComplete();
+                  },
+                  controller: _refreshController,
+                  enablePullDown: true,
+                  header: WaterDropMaterialHeader(
+                      backgroundColor: FarmerAppTheme.white,
+                      color: FarmerAppTheme.lma_purple,
+                      distance: 30),
+                  footer: ClassicFooter(
+                    loadStyle: LoadStyle.ShowWhenLoading,
+                    textStyle: TextStyle(
+                      fontFamily: FarmerAppTheme.font_AvenirLTStd_Book,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 13,
+                      letterSpacing: -0.2,
+                      color: FarmerAppTheme.grey,
+                    ),
+                    completeDuration: Duration(milliseconds: 500),
+                    loadingIcon: SizedBox(
+                      width: 25.0,
+                      height: 25.0,
+                      child: Platform.isIOS
+                          ? CupertinoActivityIndicator()
+                          : CircularProgressIndicator(strokeWidth: 2.0),
+                    ),
+                    idleIcon: Icon(
+                      Icons.sync,
+                      color: FarmerAppTheme.grey,
+                    ),
+                    canLoadingIcon: Icon(
+                      Icons.arrow_upward,
+                      color: FarmerAppTheme.grey,
+                    ),
                   ),
-                  completeDuration: Duration(milliseconds: 500),
-                  loadingIcon: SizedBox(
-                    width: 25.0,
-                    height: 25.0,
-                    child: Platform.isIOS
-                        ? CupertinoActivityIndicator()
-                        : CircularProgressIndicator(strokeWidth: 2.0),
-                  ),
-                  idleIcon: Icon(
-                    Icons.sync,
-                    color: FarmerAppTheme.grey,
-                  ),
-                  canLoadingIcon: Icon(
-                    Icons.arrow_upward,
-                    color: FarmerAppTheme.grey,
-                  ),
-                ),
-                child: ListView(
-                  controller: _scrollController,
-                  shrinkWrap: true,
-                  padding: EdgeInsets.only(
-                    top: //MediaQuery.of(context).padding.top,
-                        AppBar().preferredSize.height +
-                            MediaQuery.of(context).padding.top +
-                            24,
-                    bottom: 62,
-                  ),
-                  scrollDirection: Axis.vertical,
-                  children: <Widget>[
-                    CustomTitleView(
-                      titleTxt: 'Farmer-farms',
-                      subTxt: '',
-                      animation: Tween<double>(begin: 0.0, end: 1.0).animate(
-                          CurvedAnimation(
-                              parent: _animationController!,
-                              curve: Interval(
-                                  (1 /
-                                          FarmerAppStaticParams
-                                              .mainui_lv_itemscount) *
-                                      0,
-                                  1.0,
-                                  curve: Curves.fastOutSlowIn))),
-                      animationController: _animationController,
-                      titleTextStyle: TextStyle(
-                        fontFamily: FarmerAppTheme.font_AvenirLTStd_Heavy,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 18,
-                        letterSpacing: 0.5,
-                        color: FarmerAppTheme.lma_purple_2,
+                  child: ListView(
+                    controller: _scrollController,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.only(
+                      top: //MediaQuery.of(context).padding.top,
+                          AppBar().preferredSize.height +
+                              MediaQuery.of(context).padding.top +
+                              24,
+                      bottom: 62,
+                    ),
+                    scrollDirection: Axis.vertical,
+                    children: <Widget>[
+                      CustomTitleView(
+                        titleTxt: 'Farmer-farms',
+                        subTxt: '',
+                        animation: Tween<double>(begin: 0.0, end: 1.0).animate(
+                            CurvedAnimation(
+                                parent: _animationController!,
+                                curve: Interval(
+                                    (1 /
+                                            FarmerAppStaticParams
+                                                .mainui_lv_itemscount) *
+                                        0,
+                                    1.0,
+                                    curve: Curves.fastOutSlowIn))),
+                        animationController: _animationController,
+                        titleTextStyle: TextStyle(
+                          fontFamily: FarmerAppTheme.font_AvenirLTStd_Heavy,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18,
+                          letterSpacing: 0.5,
+                          color: FarmerAppTheme.lma_purple_2,
+                        ),
                       ),
-                    ),
-                    BlocBuilder<FarmRespJModelBloc, FarmRespJModelState>(
-                        bloc: farmRespJModelBloc,
-                        builder: (context, st) {
-                          if (st is FarmRespJModelLoaded) {
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              physics: ClampingScrollPhysics(),
-                              itemCount: st.obj.length,
-                              scrollDirection: Axis.vertical,
-                              itemBuilder: (context, index) {
-                                return FarmListItem(
-                                  animationController: _animationController,
-                                  farmerListItemCallback:
-                                      _fn_on_FarmListItem_Click,
-                                  index: index,
-                                  farmRespJModel: st.obj[index],
-                                );
-                              },
-                            );
-                          } else {
-                            return invisibleWidget();
-                          }
-                        }),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                  ],
-                ),
-              ),
-            );
+                      BlocBuilder<FarmRespJModelBloc, FarmRespJModelState>(
+                          bloc: farmRespJModelBloc,
+                          builder: (context, st) {
+                            if (st is FarmRespJModelLoaded) {
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: ClampingScrollPhysics(),
+                                itemCount: st.obj.length,
+                                scrollDirection: Axis.vertical,
+                                itemBuilder: (context, index) {
+                                  return FarmListItem(
+                                    animationController: _animationController,
+                                    farmerListItemCallback:
+                                        _fn_on_FarmListItem_Click,
+                                    index: index,
+                                    farmRespJModel: st.obj[index],
+                                  );
+                                },
+                              );
+                            } else {
+                              return invisibleWidget();
+                            }
+                          }),
+                      const SizedBox(
+                        height: 7,
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            width: MediaQuery.of(context).size.width / 5,
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: () {
+                                  print('add vehicle');
+                                  _addFarm(context);
+                                },
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(43.0),
+                                ),
+                                splashColor: FarmerAppTheme.lma_blue_1,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: FarmerAppTheme.lma_purple
+                                        .withOpacity(0.8),
+                                    boxShadow: <BoxShadow>[
+                                      BoxShadow(
+                                          color: FarmerAppTheme.lma_purple_2
+                                              .withOpacity(0.4),
+                                          offset: Offset(7.0, 7.0),
+                                          blurRadius: 7.0),
+                                    ],
+                                    borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(3.0),
+                                        bottomLeft: Radius.circular(3.0),
+                                        bottomRight: Radius.circular(3.0),
+                                        topRight: Radius.circular(3.0)),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 3, bottom: 3),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          'Add farm',
+                                          style: TextStyle(
+                                            color: FarmerAppTheme.white,
+                                            fontFamily: FarmerAppTheme
+                                                .font_AvenirLTStd_Medium,
+                                          ),
+                                        ),
+                                        Icon(
+                                          Icons.add,
+                                          size: 17,
+                                          color: FarmerAppTheme.white,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ));
           }
         });
   }
@@ -292,13 +367,32 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
     FarmRespJModel farmerRespJModel,
     int? index,
   ) {}
-  //end of build widget actions
 
-  @override
-  void dispose() {
-    if (_animationController != null) {
-      _animationController?.dispose();
+  _addFarm(BuildContext context) async {
+    FarmRespJModel farmRespJModel = FarmRespJModel();
+    farmRespJModel.farmer = widget.farmerRespJModel.id;
+    FarmRespJModel? saved_FarmRespJModel = await showGeneralDialog(
+        barrierDismissible: true,
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        transitionDuration: Duration(milliseconds: 150),
+        context: context,
+        pageBuilder: (BuildContext buildContext, Animation<double> animation,
+            Animation<double> secondaryAnimation) {
+          return AddFarmDialog(
+            snackbarBuildContext: snackbarBuildContext,
+            farm: farmRespJModel,
+          );
+        });
+    if (saved_FarmRespJModel != null) {
+      print("saved_FarmRespJModel");
+      if (widget.farmerRespJModel.id != null) {
+        print("widget.farmerRespJModel.id != null");
+        _farmListVM?.fetchFarmsFromFarmer(widget.farmerRespJModel.id!);
+      }
+    }else{
+      print("!saved_FarmRespJModel");
     }
-    super.dispose();
   }
 }
+//end of build widget actions

@@ -1,10 +1,9 @@
 import 'dart:async';
-
 import 'package:farmer_app/model/model/jsonserializable/api/from/farmer/FarmerRespJModel.dart';
-import 'package:farmer_app/utils/functions/common_widgets.dart';
 import 'package:farmer_app/utils/functions/validators.dart';
 import 'package:farmer_app/utils/statics/farmer_app_static_params.dart';
 import 'package:farmer_app/utils/themes/farmer_app_theme.dart';
+import 'package:farmer_app/view/common/common_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:after_layout/after_layout.dart';
 
