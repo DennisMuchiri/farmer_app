@@ -291,9 +291,7 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
   _fn_on_FarmListItem_Click(
     FarmRespJModel farmerRespJModel,
     int? index,
-  ) {
-
-  }
+  ) {}
   //end of build widget actions
 
   @override
