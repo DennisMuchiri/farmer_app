@@ -1,6 +1,9 @@
 import 'package:farmer_app/injection/injection.dart';
+import 'package:farmer_app/model/repository/remote/chopper/setup/post_api_service.dart';
+import 'package:farmer_app/view/screens/HomeScreen.dart';
 import 'package:farmer_app/view_model/bloc/counter/counter_bloc.dart';
 import 'package:farmer_app/view_model/bloc/counter/counter_event.dart';
+import 'package:farmer_app/view_model/bloc/navigation/navigationdrawer_bloc.dart';
 import 'package:farmer_app/view_model/counter/CounterChangeNotifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,15 +39,25 @@ class _MyAppState extends State<MyApp>
             return getIt<CounterChangeNotifier>();
           },
         ),*/
+
+        Provider(
+          create: (maincontext) => PostApiService.create(),
+          dispose: (maincontext, PostApiService service) =>
+              service.client.dispose(),
+        ),
+        BlocProvider<NavigationdrawerBloc>(
+          create: (maincontext) => NavigationdrawerBloc(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: MyHomePage(
+        home: HomeScreen(),
+        /*MyHomePage(
           title: 'Farm app',
-        ),
+        ),*/
       ),
     );
   }
@@ -74,8 +87,6 @@ class _MyHomePageState extends State<MyHomePage>
   }*/
   @override
   void afterFirstLayout(BuildContext context) {
-
-
     /*counterBloc.stream.listen((event) {
 
     });*/

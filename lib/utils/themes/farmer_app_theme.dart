@@ -7,8 +7,16 @@ class FarmerAppTheme {
 
   static Color green_open = HexColor('#4DBD74');
   static Color red_closed = HexColor('#F86C6B');
-
-  //AVENIR
+  static Color white = Colors.white;
+  static const Color grey = Color(0xFF3A5160);
+  static const Color bg_purple_light = Color(0xFFE6EAF7);
+  static const Color lma_purple = Color(0xFF6C66A9);
+  static const Color transparent = Colors.transparent;
+  static const Color lma_purple_2 = Color(0xFF404260);
+  static const Color lma_blue_1 = Color(0xFF9CE7F2);
+  static const Color lma_grey_op_05= Color(0xFF9FA8AF);
+  static const Color darkText = Color(0xFF253840);
+  //AVENIR FONT
   static const String font_AvenirLTStd_Black = 'AvenirLTStd-Black';
   static const String font_AvenirLTStd_BlackOblique =
       'AvenirLTStd-BlackOblique';

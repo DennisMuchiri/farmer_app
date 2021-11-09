@@ -1,47 +1,19 @@
 import 'package:chopper/chopper.dart';
 import 'dart:io';
 import 'package:http/io_client.dart' as http;
+import 'package:farmer_app/injection/injection.dart';
+import 'package:injectable/injectable.dart';
 
 part 'post_api_service.chopper.dart';
 
-String baseUrlStr = 'https://incident-api-staging.adriangroup.app/';
+String baseUrlStr = 'https://testapi.io/api/thomasjgx/farmers/';
 
 @ChopperApi(baseUrl: '')
 abstract class PostApiService extends ChopperService {
-  @Get(path: 'farmer/?depth={depth}&&limit={limit}')
-  Future<Response> get_farmer_limit(
+  @Get(path: 'farmers')
+  Future<Response> get_farmers();
 
-    @Path('limit') String limit,
-    @Path('depth') String depth,
-  );
-
-  @Get(path: 'notif/?depth={depth}&&limit={limit}')
-  Future<Response> get_notif_limit(
-
-    @Path('limit') String limit,
-    @Path('depth') String depth,
-  );
-
-  //location
-  @Get(path: 'location/?depth={depth}&&limit={limit}')
-  Future<Response> req_ehs_get_location_limit(
-
-      @Path('limit') String limit,
-      @Path('depth') String depth,
-      );
-
-  @Patch(path: 'location/{id}/')
-  Future<Response> req_ehs_patch_location(
-
-      @Path('id') int id,
-      @Body() Map<String, dynamic> map);
-
-  @Post(path: 'location/')
-  Future<Response> req_ehs_post_location(
-
-      @Body() Map<String, dynamic> map);
-  //end of location
-
+  @injectable
   static PostApiService create() {
     final ioc = new HttpClient();
     ioc.badCertificateCallback =
