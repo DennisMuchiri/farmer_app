@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:farmer_app/injection/injection.dart';
 import 'package:farmer_app/model/model/custom/NavigationData.dart';
 import 'package:farmer_app/utils/enums/screens.dart';
@@ -6,6 +8,7 @@ import 'package:farmer_app/view/fragments/farmer/FarmerListScreen.dart';
 import 'package:farmer_app/view_model/bloc/counter/counter_bloc.dart';
 import 'package:farmer_app/view_model/bloc/counter/counter_event.dart';
 import 'package:farmer_app/view_model/bloc/navigation/navigationdrawer_bloc.dart';
+import 'package:farmer_app/view_model/bloc/navigation/navigationdrawer_event.dart';
 import 'package:farmer_app/view_model/bloc/navigation/navigationdrawer_state.dart';
 import 'package:farmer_app/view_model/counter/CounterChangeNotifier.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +31,9 @@ class _HomeScreenState extends State<HomeScreen>
     with AfterLayoutMixin<HomeScreen> {
   Object? screenView = FarmerListScreen();
   ScreenIndex? screenIndex;
+
+  //stste variables
+  List<Object> widgetsHistory = [];
 
   @override
   void afterFirstLayout(BuildContext context) {}
@@ -96,8 +102,67 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   //Build widget functions
-  _onBackPressed(BuildContext context) {}
+  _ifToAddWidgetToHistory(Object? widgetToadd) {
+    String TAG = 'ifToAddWidgetToHistory:';
+    if (widgetsHistory != null) {
+      List<Object> widgetsFoudMatching = [];
+      for (Object widgetsHistoryItem in widgetsHistory) {
+        if (widgetsHistoryItem.runtimeType.toString() ==
+            widgetToadd.runtimeType.toString()) {
+          widgetsFoudMatching.add(widgetsHistoryItem);
+        }
+      }
+      if (widgetsFoudMatching.length > 0) {
+      } else {
+        widgetsHistory.add(widgetToadd!);
+      }
+    }
+  }
 
-  _ifToAddWidgetToHistory(Object? screenview) {}
+  _onBackPressed(BuildContext context) {
+    String TAG = '_onBackPressed:';
+
+    if (widgetsHistory.length > 0) {
+      List<Object> updatedWidgetHistoryState = [];
+      updatedWidgetHistoryState.addAll(widgetsHistory);
+
+      Object currentWidget = widgetsHistory[widgetsHistory.length - 1];
+      updatedWidgetHistoryState.remove(currentWidget);
+
+      if (updatedWidgetHistoryState.length > 0) {
+        Object openingWidget = widgetsHistory[widgetsHistory.length - 2];
+
+        NavigationData navigationData = new NavigationData();
+        navigationData.selectedWidget = openingWidget;
+        navigationData.isInBackPressed = true;
+        NavigationdrawerBloc navigationdrawerBloc =
+            BlocProvider.of<NavigationdrawerBloc>(context);
+        navigationdrawerBloc.add(NavDrawer(navigationData));
+
+        widgetsHistory.remove(currentWidget);
+      } else {
+        return _asyncPop(context);
+      }
+    } else {
+      return _asyncPop(context);
+    }
+  }
+
+  Future<bool> _asyncPop(BuildContext context) async {
+    String TAG = 'asyncPop:';
+    if (Platform.isIOS) {
+      return false;
+    } else {
+      //bool afterPop = await Navigator.of(context).pop();
+      bool afterPop = Navigator.of(context).canPop();
+      if (afterPop) {
+        Navigator.of(context).pop();
+        return afterPop;
+      } else {
+        Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
+        return true;
+      }
+    }
+  }
   //end of Build Widget functions
 }

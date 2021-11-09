@@ -117,7 +117,7 @@ class _FarmerListScreenState extends State<FarmerListScreen>
       child: Scaffold(
         backgroundColor: FarmerAppTheme.transparent,
         body: getMainListViewUI(),
-        /* floatingActionButton: Padding(
+        floatingActionButton: Padding(
           padding: EdgeInsets.only(right: 8.0),
           child: Container(
             width: 55,
@@ -137,6 +137,8 @@ class _FarmerListScreenState extends State<FarmerListScreen>
               child: InkWell(
                 onTap: () async {
                   print('ADD CLICKED');
+                  FarmerRespJModel farmerRespJModel = FarmerRespJModel();
+                  _fn_on_FarmerListItem_Click(farmerRespJModel, null);
                 },
                 borderRadius: const BorderRadius.all(
                   Radius.circular(43.0),
@@ -154,7 +156,7 @@ class _FarmerListScreenState extends State<FarmerListScreen>
               ),
             ),
           ),
-        ),*/
+        ),
       ),
     );
   }
@@ -402,7 +404,6 @@ class _FarmerListScreenState extends State<FarmerListScreen>
     FarmerRespJModel farmerRespJModel,
     int? index,
   ) {
-
     NavigationData navigationData = new NavigationData();
     navigationData.selectedWidget = FarmerCreateEditScreen(
       farmerRespJModel: farmerRespJModel,
