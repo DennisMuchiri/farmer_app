@@ -1,0 +1,29 @@
+1. Command to generate jsonserializbuildable g classes
+  flutter2master packages pub run build_runner build
+  flutter2master packages pub run build_runner build --delete-conflicting-outputs
+  flutter2master packages pub run build_runner build --delete-conflicting-outputs
+  flutter2master build apk --release --split-per-abi
+  flutter2master clean
+  flutter2master pub get
+  flutter2master create
+  flutter2master build apk --release --split-per-abi
+  flutter2master build ios
+  flutter2master logs
+  flutter2master build ios --release --no-codesign
+  flutter2master pub add --dev dart_code_metrics
+  flutter2master pub run dart_code_metrics:metrics check-unused-files lib
+  flutter2master create --org com.adrian_erp_flutter.phasetwo.ehs adrian_ehs
+
+  flutter2master run -d chrome
+
+
+2. Command to generate chopper and moor g classes
+  flutter packages pub run build_runner watch
+
+3. flutter
+   killall -9 dart
+
+
+  CURRENT DEPLOYED VERSION   CURRENT DB VERSION
+    25                            6
+                                  9

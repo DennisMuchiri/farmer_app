@@ -1,0 +1,96 @@
+name: farmer_app
+description: A new Flutter project.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.15.0-268.0.dev <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  cupertino_icons: ^1.0.2
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^1.0.0
+  flutter_bloc: ^7.3.1
+  build_runner: ^2.1.4
+  get_it: ^7.2.0
+  injectable: ^1.5.0
+  injectable_generator: ^1.5.2
+  mockito: ^5.0.16
+  after_layout: ^1.1.0
+  equatable: ^2.0.3
+  chopper: ^4.0.3
+  chopper_generator: ^4.0.3
+  pull_to_refresh: ^2.0.0
+  moor_flutter: ^4.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/drawables/
+    - assets/illustrations/
+    - assets/images/
+    - assets/icons/
+
+  fonts:
+
+    - family: AvenirLTStd-Black
+      fonts:
+        - asset: assets/fonts/Avenir/AvenirLTStd-Black.otf
+
+    - family: AvenirLTStd-BlackOblique
+      fonts:
+        - asset: assets/fonts/Avenir/AvenirLTStd-BlackOblique.otf
+
+    - family: AvenirLTStd-Book
+      fonts:
+        - asset: assets/fonts/Avenir/AvenirLTStd-Book.otf
+
+    - family: AvenirLTStd-BookOblique
+      fonts:
+        - asset: assets/fonts/Avenir/AvenirLTStd-BookOblique.otf
+
+    - family: AvenirLTStd-Heavy
+      fonts:
+        - asset: assets/fonts/Avenir/AvenirLTStd-Heavy.otf
+
+    - family: AvenirLTStd-HeavyOblique
+      fonts:
+        - asset: assets/fonts/Avenir/AvenirLTStd-HeavyOblique.otf
+
+    - family: AvenirLTStd-Light
+      fonts:
+        - asset: assets/fonts/Avenir/AvenirLTStd-Light.otf
+
+    - family: AvenirLTStd-LightOblique
+      fonts:
+        - asset: assets/fonts/Avenir/AvenirLTStd-LightOblique.otf
+
+    - family: AvenirLTStd-Medium
+      fonts:
+        - asset: assets/fonts/Avenir/AvenirLTStd-Medium.otf
+
+    - family: AvenirLTStd-MediumOblique
+      fonts:
+        - asset: assets/fonts/Avenir/AvenirLTStd-MediumOblique.otf
+
+    - family: AvenirLTStd-Oblique
+      fonts:
+        - asset: assets/fonts/Avenir/AvenirLTStd-Oblique.otf
+
+    - family: AvenirLTStd-Roman
+      fonts:
+        - asset: assets/fonts/Avenir/AvenirLTStd-Roman.otf
+
