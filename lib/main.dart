@@ -27,8 +27,11 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp>
     with AfterLayoutMixin<MyApp>, WidgetsBindingObserver {
+
   @override
-  void afterFirstLayout(BuildContext context) {}
+  void afterFirstLayout(BuildContext context) {
+
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -6,14 +6,14 @@ import 'package:injectable/injectable.dart';
 
 part 'post_api_service.chopper.dart';
 
-String baseUrlStr = 'https://testapi.io/api/thomasjgx/farmers/';
+String baseUrlStr = 'https://testapi.io/api/thomasjgx/';
 
 @ChopperApi(baseUrl: '')
 abstract class PostApiService extends ChopperService {
   @Get(path: 'farmers')
   Future<Response> get_farmers();
 
-  @injectable
+
   static PostApiService create() {
     final ioc = new HttpClient();
     ioc.badCertificateCallback =

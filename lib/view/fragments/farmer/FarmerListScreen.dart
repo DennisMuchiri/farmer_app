@@ -1,14 +1,19 @@
 import 'dart:io';
+import 'package:farmer_app/model/model/custom/NavigationData.dart';
 import 'package:farmer_app/model/model/jsonserializable/api/from/farmer/FarmerRespJModel.dart';
+import 'package:farmer_app/model/repository/remote/chopper/functions/fetch/fetch_farmers.dart';
 import 'package:farmer_app/utils/functions/common_functions.dart';
 import 'package:farmer_app/utils/functions/common_widgets.dart';
 import 'package:farmer_app/utils/statics/farmer_app_static_params.dart';
 import 'package:farmer_app/utils/themes/farmer_app_theme.dart';
 import 'package:farmer_app/view/custom/title/CustomTitleView.dart';
+import 'package:farmer_app/view/fragments/farmer/FarmerCreateEditScreen.dart';
 import 'package:farmer_app/view/fragments/farmer/listitems/FarmerListItem.dart';
 import 'package:farmer_app/view_model/bloc/farmers/bloc/farmer_respjmodel_bloc.dart';
 import 'package:farmer_app/view_model/bloc/farmers/bloc/farmer_respjmodel_state.dart';
 import 'package:farmer_app/view_model/bloc/farmers/vms/farmer_list_viewmodel.dart';
+import 'package:farmer_app/view_model/bloc/navigation/navigationdrawer_bloc.dart';
+import 'package:farmer_app/view_model/bloc/navigation/navigationdrawer_event.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:after_layout/after_layout.dart';
@@ -96,8 +101,10 @@ class _FarmerListScreenState extends State<FarmerListScreen>
   }
 
   //AFTER FIRST LAYOUT FUNCTIONS
-  _setUpData(BuildContext context) {
+  _setUpData(BuildContext context) async {
     //load data
+    //this should be moved to it's own isolate
+    await req_fetch_farmers(true);
     farmerListVM?.fetchFarmers(null);
     //end of load data
   }
@@ -110,6 +117,44 @@ class _FarmerListScreenState extends State<FarmerListScreen>
       child: Scaffold(
         backgroundColor: FarmerAppTheme.transparent,
         body: getMainListViewUI(),
+        /* floatingActionButton: Padding(
+          padding: EdgeInsets.only(right: 8.0),
+          child: Container(
+            width: 55,
+            height: 55,
+            decoration: BoxDecoration(
+              color: FarmerAppTheme.white.withOpacity(0.8),
+              shape: BoxShape.circle,
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                    color: FarmerAppTheme.lma_purple.withOpacity(0.4),
+                    offset: Offset(8.0, 8.0),
+                    blurRadius: 8.0),
+              ],
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () async {
+                  print('ADD CLICKED');
+                },
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(43.0),
+                ),
+                splashColor: FarmerAppTheme.grey,
+                child: const Padding(
+                  padding: EdgeInsets.all(4.0),
+                  child: Center(
+                      child: Icon(
+                    Icons.add,
+                    size: 32,
+                    color: FarmerAppTheme.lma_purple,
+                  )),
+                ),
+              ),
+            ),
+          ),
+        ),*/
       ),
     );
   }
@@ -303,7 +348,8 @@ class _FarmerListScreenState extends State<FarmerListScreen>
                                 autofocus: false,
                                 onTap: () {},
                                 onChanged: (String txt) {
-                                  //_onSearchParamChanged(context);
+                                  farmerListVM?.searchFarmers(
+                                      _searchTextEditingController.text);
                                 },
                               ),
                             ),
@@ -355,7 +401,17 @@ class _FarmerListScreenState extends State<FarmerListScreen>
   _fn_on_FarmerListItem_Click(
     FarmerRespJModel farmerRespJModel,
     int? index,
-  ) {}
+  ) {
+
+    NavigationData navigationData = new NavigationData();
+    navigationData.selectedWidget = FarmerCreateEditScreen(
+      farmerRespJModel: farmerRespJModel,
+    );
+    navigationData.isInBackPressed = false;
+    NavigationdrawerBloc navigationdrawerBloc =
+        BlocProvider.of<NavigationdrawerBloc>(context);
+    navigationdrawerBloc.add(NavDrawer(navigationData));
+  }
   //end of build widget actions
 
   @override

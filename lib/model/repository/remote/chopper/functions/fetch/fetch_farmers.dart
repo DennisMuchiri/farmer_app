@@ -1,5 +1,6 @@
 import 'package:farmer_app/model/model/jsonserializable/api/from/farmer/FarmerRespJModel.dart';
 import 'package:farmer_app/injection/injection.dart';
+import 'package:farmer_app/model/repository/local/db/farmers/FarmerDao.dart';
 import 'package:farmer_app/model/repository/remote/chopper/setup/post_api_service.dart';
 import 'package:farmer_app/utils/functions/common_functions.dart';
 import 'package:farmer_app/view/screens/HomeScreen.dart';
@@ -13,8 +14,12 @@ import 'package:after_layout/after_layout.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chopper/chopper.dart';
 
-Future<List<FarmerRespJModel>?> req_fetch_farmers() async {
-  PostApiService postApiService = getIt<PostApiService>();
+import 'dart:math';
+
+Future<List<FarmerRespJModel>?> req_fetch_farmers(bool savelocally) async {
+  String TAG = "req_fetch_farmers:";
+  print(TAG);
+  PostApiService postApiService = PostApiService.create();
   Response serviceresponse = await postApiService.get_farmers();
   int statusCode = serviceresponse.statusCode;
 
@@ -24,12 +29,18 @@ Future<List<FarmerRespJModel>?> req_fetch_farmers() async {
       List<FarmerRespJModel> farmerRespJModelList =
           (respBody as List).map((i) => FarmerRespJModel.fromJson(i)).toList();
 
-
+      if (savelocally) {
+        await insertBatch_FarmerRespJModel(farmerRespJModelList);
+      }
       return farmerRespJModelList;
     } catch (error) {
       return null;
     }
   } else {
+    print(TAG + " !isresponseSuccessfull");
+    print(serviceresponse.bodyString);
     return null;
   }
 }
+
+//json store

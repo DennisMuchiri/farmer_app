@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:farmer_app/model/model/jsonserializable/api/from/farmer/FarmerRespJModel.dart';
+import 'package:farmer_app/model/model/jsonserializable/api/from/farmer/FarmRespJModel.dart';
 import 'package:farmer_app/utils/functions/common_widgets.dart';
 import 'package:farmer_app/utils/functions/validators.dart';
 import 'package:farmer_app/utils/statics/farmer_app_static_params.dart';
@@ -8,17 +8,17 @@ import 'package:farmer_app/utils/themes/farmer_app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:after_layout/after_layout.dart';
 
-class FarmerListItem extends StatefulWidget {
+class FarmListItem extends StatefulWidget {
   AnimationController? animationController;
-  FarmerListItemCallback? farmerListItemCallback;
-  FarmerRespJModel farmerRespJModel;
+  FarmListItemCallback? farmerListItemCallback;
+  FarmRespJModel farmRespJModel;
   int? index;
 
-  FarmerListItem({
+  FarmListItem({
     Key? key,
     this.animationController,
     this.farmerListItemCallback,
-    required this.farmerRespJModel,
+    required this.farmRespJModel,
     this.index,
   }) : super(key: key);
 
@@ -26,8 +26,8 @@ class FarmerListItem extends StatefulWidget {
   _FiberProjectListItemState createState() => _FiberProjectListItemState();
 }
 
-class _FiberProjectListItemState extends State<FarmerListItem>
-    with TickerProviderStateMixin, AfterLayoutMixin<FarmerListItem> {
+class _FiberProjectListItemState extends State<FarmListItem>
+    with TickerProviderStateMixin, AfterLayoutMixin<FarmListItem> {
   Animation<double>? _animation;
   bool isSelected = false;
 
@@ -46,13 +46,13 @@ class _FiberProjectListItemState extends State<FarmerListItem>
 
   @override
   void dispose() {
-    String TAG = 'FarmerListItem_dispose';
+    String TAG = 'FarmListItem_dispose';
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    widget.farmerRespJModel.lv_index = widget.index!;
+    widget.farmRespJModel.lv_index = widget.index!;
     return Container(
       child: AnimatedBuilder(
         animation: widget.animationController!,
@@ -76,7 +76,7 @@ class _FiberProjectListItemState extends State<FarmerListItem>
                           child: InkWell(
                             onTap: () {
                               widget.farmerListItemCallback!(
-                                widget.farmerRespJModel,
+                                widget.farmRespJModel,
                                 widget.index,
                               );
                             },
@@ -115,53 +115,6 @@ class _FiberProjectListItemState extends State<FarmerListItem>
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      /*Container(
-                                            width: 80,
-                                            //height: 100,
-                                            decoration: const BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(8.0),
-                                                bottomLeft:
-                                                    Radius.circular(8.0),
-                                              ),
-                                            ),
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                top: 5,
-                                                left: 5,
-                                              ),
-                                              child: Container(
-                                                width: 80,
-                                                height: 80,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        const BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(8.0),
-                                                    ),
-                                                    image: DecorationImage(
-                                                        image: ((widget.farmerRespJModel
-                                                                            .picture !=
-                                                                        null &&
-                                                                    isStringValid(widget
-                                                                        .farmerRespJModel
-                                                                        .picture
-                                                                        .picture)
-                                                                ? Image.network(
-                                                                    widget
-                                                                        .farmerRespJModel
-                                                                        .picture
-                                                                        .picture)
-                                                                : Image.asset(
-                                                                    'assets/illustrations/back_original.png')))
-                                                            .image,
-                                                        fit: BoxFit.cover)),
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 20,
-                                          ),*/
                                       SizedBox(
                                         width: 10,
                                       ),
@@ -178,11 +131,8 @@ class _FiberProjectListItemState extends State<FarmerListItem>
                                                 padding:
                                                     EdgeInsets.only(top: 5),
                                                 child: Text(
-                                                    widget.farmerRespJModel
-                                                            .first_name! +
-                                                        " " +
-                                                        widget.farmerRespJModel
-                                                            .last_name!,
+                                                    widget.farmRespJModel
+                                                        .farm_name!,
                                                     style: const TextStyle(
                                                       fontFamily: FarmerAppTheme
                                                           .font_AvenirLTStd_Medium,
@@ -195,32 +145,12 @@ class _FiberProjectListItemState extends State<FarmerListItem>
                                                     )),
                                               ),
                                               ((isStringValid(widget
-                                                      .farmerRespJModel.gender!)
+                                                      .farmRespJModel
+                                                      .farm_size!)
                                                   ? Text(
-                                                      'Gender : ' +
-                                                          widget
-                                                              .farmerRespJModel
-                                                              .gender!,
-                                                      style: const TextStyle(
-                                                        fontFamily: FarmerAppTheme
-                                                            .font_AvenirLTStd_Book,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize: 12,
-                                                        letterSpacing: -0.2,
-                                                        color: FarmerAppTheme
-                                                            .lma_grey_op_05,
-                                                      ),
-                                                    )
-                                                  : invisibleWidget())),
-                                              ((isStringValid(widget
-                                                      .farmerRespJModel
-                                                      .member_number!)
-                                                  ? Text(
-                                                      'Member No : ' +
-                                                          widget
-                                                              .farmerRespJModel
-                                                              .member_number!,
+                                                      'Size : ' +
+                                                          widget.farmRespJModel
+                                                              .farm_size!,
                                                       style: const TextStyle(
                                                         fontFamily: FarmerAppTheme
                                                             .font_AvenirLTStd_Book,
@@ -257,7 +187,7 @@ class _FiberProjectListItemState extends State<FarmerListItem>
   }
 }
 
-typedef FarmerListItemCallback = void Function(
-  FarmerRespJModel farmerRespJModel,
+typedef FarmListItemCallback = void Function(
+  FarmRespJModel farmRespJModel,
   int? index,
 );
