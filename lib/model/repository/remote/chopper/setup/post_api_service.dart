@@ -13,6 +13,9 @@ abstract class PostApiService extends ChopperService {
   @Get(path: 'farmers')
   Future<Response> get_farmers();
 
+  @Post(path: 'farmers/sync')
+  Future<Response> post_farmers(
+      @Body() Map<String, dynamic> map);
 
   static PostApiService create() {
     final ioc = new HttpClient();

@@ -103,15 +103,42 @@ Future<int> frm_dao_insertFarmlocal(
   return insertedid;
 }
 
-
 Future<bool> frm_dao_deleteFarmlocal(
-    int farmid,
-    BuildContext buildContext,
-    ) async {
-
+  int farmid,
+  BuildContext buildContext,
+) async {
   bool isdeleted = await Provider.of<AppDatabase>(buildContext, listen: false)
       .mrfarmDao
       .softdeleteMrfarmsCompanion(farmid);
   return isdeleted;
 }
 
+//sync-new_farms
+Future<List<FarmRespJModel>> farmdao_getNewFarms(
+  AppDatabase appDatabase,
+) async {
+  List<Mrfarm> farmlist = await appDatabase.mrfarmDao.getNewMrfarms();
+  return getIt<FarmRespJModelConverterInterface>()
+      .getFarmRespJModelListFromEntities(farmlist);
+}
+
+//sync-updated-farms
+Future<List<FarmRespJModel>> farmdao_getUpdatedFarmers(
+  AppDatabase appDatabase,
+) async {
+  List<Mrfarm> farmlist = await appDatabase.mrfarmDao.getUpdatedMrfarms();
+  return getIt<FarmRespJModelConverterInterface>()
+      .getFarmRespJModelListFromEntities(farmlist);
+}
+
+//sync-deleted-farms
+Future<List<FarmRespJModel>> farmerdao_getDeletedFarms(
+    AppDatabase appDatabase,
+    ) async {
+  List<Mrfarm> farmlist =
+  await appDatabase
+      .mrfarmDao
+      .getDeletedMrfarms();
+  return getIt<FarmRespJModelConverterInterface>()
+      .getFarmRespJModelListFromEntities(farmlist);
+}

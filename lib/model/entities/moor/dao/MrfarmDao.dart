@@ -189,7 +189,9 @@ class MrfarmDao extends DatabaseAccessor<AppDatabase> with _$MrfarmDaoMixin {
     }
 
     if (mf != null) {
-      mf = mf.copyWith(deleted: true);
+      mf = mf.copyWith(
+          deleted: true,
+          issettobeupdated: ((mf.onlineid != null ? true : false)));
       await update(mrfarms).replace(mf);
     }
 
@@ -243,4 +245,60 @@ class MrfarmDao extends DatabaseAccessor<AppDatabase> with _$MrfarmDaoMixin {
 
   Future<int> deleteMrfarmFuture(Mrfarm mrfarm) =>
       delete(mrfarms).delete(mrfarm);
+
+  //sync -getnew farms
+  Future<List<Mrfarm>> getNewMrfarms() {
+    String TAG = 'getNewMrfarms:';
+    return (select(mrfarms)
+          ..where(
+              (t) => t.issettobeupdated.equals(true) & t.onlineid.isNull()))
+        .get()
+        .then((List<Mrfarm> farmdataList) {
+      if (farmdataList.length > 0) {
+        return farmdataList;
+      } else {
+        return [];
+      }
+    }, onError: (error) {
+      return [];
+    });
+  }
+
+  //sync -getupdatedfarms
+  Future<List<Mrfarm>> getUpdatedMrfarms() {
+    String TAG = 'getUpdatedMrfarms:';
+    return (select(mrfarms)
+          ..where(
+              (t) => t.issettobeupdated.equals(true) & t.onlineid.isNotNull()))
+        .get()
+        .then((List<Mrfarm> farmdataList) {
+      if (farmdataList.length > 0) {
+        return farmdataList;
+      } else {
+        return [];
+      }
+    }, onError: (error) {
+      return [];
+    });
+  }
+
+  //sync -getdeletedfarms
+  Future<List<Mrfarm>> getDeletedMrfarms() {
+    String TAG = 'getDeletedMrfarms:';
+    return (select(mrfarms)
+      ..where((t) =>
+      t.issettobeupdated.equals(true) &
+      t.onlineid.isNotNull() &
+      t.deleted.equals(true)))
+        .get()
+        .then((List<Mrfarm> farmdataList) {
+      if (farmdataList.length > 0) {
+        return farmdataList;
+      } else {
+        return [];
+      }
+    }, onError: (error) {
+      return [];
+    });
+  }
 }

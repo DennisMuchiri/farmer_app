@@ -22,4 +22,12 @@ class _$PostApiService extends PostApiService {
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> post_farmers(Map<String, dynamic> map) {
+    final $url = 'farmers/sync';
+    final $body = map;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
 }
