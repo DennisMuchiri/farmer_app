@@ -131,7 +131,9 @@ class MrfarmerDao extends DatabaseAccessor<AppDatabase>
     }
 
     if (mf != null) {
-      mf = mf.copyWith(deleted: true);
+      mf = mf.copyWith(
+          deleted: true,
+          issettobeupdated: ((mf.onlineid != null ? true : false)));
       await update(mrfarmers).replace(mf);
     }
 
@@ -227,4 +229,59 @@ class MrfarmerDao extends DatabaseAccessor<AppDatabase>
 
   Future<int> deleteMrfarmerFuture(Mrfarmer mrfarmer) =>
       delete(mrfarmers).delete(mrfarmer);
+
+  //sync -getnew farmers
+  Future<List<Mrfarmer>> getNewMrfarmers() {
+    String TAG = 'getNewMrfarmers:';
+    return (select(mrfarmers)
+          ..where((t) => t.issettobeupdated.equals(true) & t.onlineid.isNull()))
+        .get()
+        .then((List<Mrfarmer> onlineuserdataList) {
+      if (onlineuserdataList.length > 0) {
+        return onlineuserdataList;
+      } else {
+        return [];
+      }
+    }, onError: (error) {
+      return [];
+    });
+  }
+
+  //sync -getupdatedfarmers
+  Future<List<Mrfarmer>> getUpdatedMrfarmers() {
+    String TAG = 'getUpdatedMrfarmers:';
+    return (select(mrfarmers)
+          ..where(
+              (t) => t.issettobeupdated.equals(true) & t.onlineid.isNotNull()))
+        .get()
+        .then((List<Mrfarmer> onlineuserdataList) {
+      if (onlineuserdataList.length > 0) {
+        return onlineuserdataList;
+      } else {
+        return [];
+      }
+    }, onError: (error) {
+      return [];
+    });
+  }
+
+  //sync -getdeletedfarmers
+  Future<List<Mrfarmer>> getDeletedMrfarmers() {
+    String TAG = 'getUpdatedMrfarmers:';
+    return (select(mrfarmers)
+          ..where((t) =>
+              t.issettobeupdated.equals(true) &
+              t.onlineid.isNotNull() &
+              t.deleted.equals(true)))
+        .get()
+        .then((List<Mrfarmer> onlineuserdataList) {
+      if (onlineuserdataList.length > 0) {
+        return onlineuserdataList;
+      } else {
+        return [];
+      }
+    }, onError: (error) {
+      return [];
+    });
+  }
 }

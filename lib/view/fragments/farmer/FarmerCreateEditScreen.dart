@@ -1441,7 +1441,7 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
     if (await isDataValid()) {
       //SAVE Farm For User
       FarmerListVM _farmerListVM = FarmerListVM();
-
+      widget.farmerRespJModel.issettobeupdated = true;
       if (widget.farmerRespJModel.id != null) {
         //update
         bool is_updated = await _farmerListVM.updateFarmerlocal(

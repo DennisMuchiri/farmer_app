@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:farmer_app/injection/injection.dart';
 import 'package:farmer_app/model/model/custom/NavigationData.dart';
+import 'package:farmer_app/model/repository/remote/chopper/functions/post_put/post_put_sync.dart';
 import 'package:farmer_app/utils/enums/screens.dart';
 import 'package:farmer_app/utils/themes/farmer_app_theme.dart';
 import 'package:farmer_app/view/fragments/farmer/FarmerListScreen.dart';
@@ -36,7 +37,10 @@ class _HomeScreenState extends State<HomeScreen>
   List<Object> widgetsHistory = [];
 
   @override
-  void afterFirstLayout(BuildContext context) {}
+  void afterFirstLayout(BuildContext context) {
+    //start sync isolate
+    post_put_sync_isolate();
+  }
 
   @override
   Widget build(BuildContext context) {

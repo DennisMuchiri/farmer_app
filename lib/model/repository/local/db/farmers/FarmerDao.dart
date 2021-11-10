@@ -124,3 +124,32 @@ Future<bool> farmer_dao_deleteFarmerlocal(
       .softdeleteMrfarmersCompanion(farmid);
   return isdeleted;
 }
+
+//sync-new_farmers
+Future<List<FarmerRespJModel>> farmerdao_getNewFarmers(
+  AppDatabase appDatabase,
+) async {
+  List<Mrfarmer> farmerlist = await appDatabase.mrfarmerDao.getNewMrfarmers();
+  return getIt<FarmerRespJModelConverterInterface>()
+      .getFarmerRespJModelListFromEntities(farmerlist);
+}
+
+//sync-updated-farmers
+Future<List<FarmerRespJModel>> farmerdao_getUpdatedFarmers(
+  AppDatabase appDatabase,
+) async {
+  List<Mrfarmer> farmerlist =
+      await appDatabase.mrfarmerDao.getUpdatedMrfarmers();
+  return getIt<FarmerRespJModelConverterInterface>()
+      .getFarmerRespJModelListFromEntities(farmerlist);
+}
+
+//sync-deleted-farmers
+Future<List<FarmerRespJModel>> farmerdao_getDeletedFarmers(
+  AppDatabase appDatabase,
+) async {
+  List<Mrfarmer> farmerlist =
+      await appDatabase.mrfarmerDao.getDeletedMrfarmers();
+  return getIt<FarmerRespJModelConverterInterface>()
+      .getFarmerRespJModelListFromEntities(farmerlist);
+}

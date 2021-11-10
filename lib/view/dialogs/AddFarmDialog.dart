@@ -747,6 +747,7 @@ class _AddFarmDialogState extends State<AddFarmDialog>
     if (await isDataValid()) {
       //SAVE Farm For User
       FarmListVM _farmListVM = FarmListVM();
+      widget.farm.issettobeupdated=true;
       if (widget.farm.id != null) {
         //update
         await _farmListVM.updateFarmlocal(widget.farm, context);
