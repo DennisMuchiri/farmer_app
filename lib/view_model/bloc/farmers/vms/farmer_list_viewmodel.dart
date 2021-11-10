@@ -5,6 +5,7 @@ import 'package:farmer_app/view_model/bloc/farmers/bloc/farmer_respjmodel_bloc.d
 import 'package:farmer_app/view_model/bloc/farmers/bloc/farmer_respjmodel_bloc_event.dart';
 import 'package:farmer_app/view_model/bloc/farmers/bloc/farmer_respjmodel_state.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
 import 'package:farmer_app/model/repository/local/counter/i_counter_repository.dart';
 
@@ -23,10 +24,34 @@ class FarmerListVM {
     }
   }
 
+  Future<List<FarmerRespJModel>?> fetchFarmerslocal(
+      BuildContext buildContext) async {
+    List<FarmerRespJModel>? _farmerRespJModelList =
+        await load_FarmerRespJModel_local(buildContext);
+
+    if (_farmerRespJModelList != null) {
+      farmerRespJModelBloc?.add(ObjChanged(_farmerRespJModelList));
+    }
+  }
+
   Future<List<FarmerRespJModel>?> searchFarmers(String? keyword) async {
     List<FarmerRespJModel>? _farmerRespJModelList =
         await search_FarmerRespJModel(keyword!);
 
+    if (_farmerRespJModelList != null) {
+      farmerRespJModelBloc?.add(ObjChanged(_farmerRespJModelList));
+    }
+  }
+
+  Future<List<FarmerRespJModel>?> searchFarmerslocal(
+    String? keyword,
+    BuildContext buildContext,
+  ) async {
+    List<FarmerRespJModel>? _farmerRespJModelList =
+        await search_FarmerRespJModel_local(
+      keyword!,
+      buildContext,
+    );
 
     if (_farmerRespJModelList != null) {
       farmerRespJModelBloc?.add(ObjChanged(_farmerRespJModelList));

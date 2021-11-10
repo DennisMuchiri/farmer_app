@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:farmer_app/model/model/custom/NavigationData.dart';
 import 'package:farmer_app/model/model/jsonserializable/api/from/farmer/FarmRespJModel.dart';
 import 'package:farmer_app/model/model/jsonserializable/api/from/farmer/FarmerRespJModel.dart';
 import 'package:farmer_app/model/repository/remote/chopper/functions/fetch/fetch_farmers.dart';
@@ -16,6 +17,7 @@ import 'package:farmer_app/view_model/bloc/farmers/vms/farm_viewmodel.dart';
 import 'package:farmer_app/view_model/bloc/farmers/vms/farmer_list_viewmodel.dart';
 import 'package:farmer_app/view_model/bloc/farms/bloc/farm_respjmodel_bloc.dart';
 import 'package:farmer_app/view_model/bloc/farms/bloc/farm_respjmodel_state.dart';
+import 'package:farmer_app/view_model/streams/navdata/NavigationDataBLoC.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:after_layout/after_layout.dart';
@@ -62,6 +64,13 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
   FarmRespJModelBloc farmRespJModelBloc = FarmRespJModelBloc();
   FarmListVM? _farmListVM;
   //end of state changers
+
+  //fields
+  //fname
+  TextEditingController _fname_txt_Controller = TextEditingController();
+  FocusNode _fname_FocusNode = FocusNode();
+  NavigationDataBLoC _wd_fname_Container_NavigationDataBLoC =
+      NavigationDataBLoC();
 
   @override
   void initState() {
@@ -121,7 +130,8 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
   _setUpData(BuildContext context) async {
     //load data
     if (widget.farmerRespJModel.id != null) {
-      _farmListVM?.fetchFarmsFromFarmer(widget.farmerRespJModel.id!);
+      _farmListVM?.fetchFarmsFromFarmerlocal(
+          widget.farmerRespJModel.id!, context);
     }
     //end of load data
   }
@@ -165,7 +175,7 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
                       child: Icon(
                     Icons.save,
                     size: 32,
-                    color: FarmerAppTheme.lma_purple,
+                    color: FarmerAppTheme.lma_purple_2,
                   )),
                 ),
               ),
@@ -241,7 +251,7 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
                     scrollDirection: Axis.vertical,
                     children: <Widget>[
                       CustomTitleView(
-                        titleTxt: 'Farmer-farms',
+                        titleTxt: 'Farmer details',
                         subTxt: '',
                         animation: Tween<double>(begin: 0.0, end: 1.0).animate(
                             CurvedAnimation(
@@ -262,6 +272,116 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
                           color: FarmerAppTheme.lma_purple_2,
                         ),
                       ),
+                      /* Padding(
+                        padding: const EdgeInsets.only(
+                            left: 4, right: 16, top: 8, bottom: 3),
+                        child: Text(
+                          'First name',
+                          style: TextStyle(
+                            fontFamily: FarmerAppTheme.font_AvenirLTStd_Medium,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            letterSpacing: 0.0,
+                            color: FarmerAppTheme.pltf_grey,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.only(top: 0, bottom: 0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Row(children: <Widget>[
+                                Expanded(
+                                    child: Container(
+                                  decoration: BoxDecoration(
+                                    color: FarmerAppTheme.white,
+                                    borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(8.0),
+                                        bottomLeft: Radius.circular(8.0),
+                                        bottomRight: Radius.circular(8.0),
+                                        topRight: Radius.circular(8.0)),
+                                    boxShadow: <BoxShadow>[
+                                      BoxShadow(
+                                          color: Colors.grey.withOpacity(0.2),
+                                          offset: const Offset(0.3, 2),
+                                          blurRadius: 4.0),
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 4, right: 4, top: 0, bottom: 0),
+                                    child: TextFormField(
+                                      keyboardType: TextInputType.name,
+                                      style: TextStyle(
+                                        fontFamily: FarmerAppTheme
+                                            .font_AvenirLTStd_Medium,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 14,
+                                        letterSpacing: 0.0,
+                                        color: FarmerAppTheme.darkText,
+                                      ),
+                                      cursorColor: Colors.grey.withOpacity(0.6),
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: "First name",
+                                        hintStyle: TextStyle(
+                                          fontFamily: FarmerAppTheme
+                                              .font_AvenirLTStd_Book,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14,
+                                          letterSpacing: 0.0,
+                                          color: FarmerAppTheme.darkText,
+                                        ),
+                                        errorStyle: TextStyle(
+                                            color: FarmerAppTheme.red,
+                                            fontSize: 12.0,
+                                            fontFamily: FarmerAppTheme
+                                                .font_AvenirLTStd_Light),
+                                        prefixIcon: Icon(
+                                          Icons.edit,
+                                          color: Colors.grey.withOpacity(0.4),
+                                          size: 15.0,
+                                        ),
+                                      ),
+                                      textInputAction: TextInputAction.next,
+                                      onChanged: (String val) {
+                                        _fnameChanged(val);
+                                      },
+                                      controller: _fname_txt_Controller,
+                                      focusNode: _fname_FocusNode,
+                                      autofocus: false,
+                                      onFieldSubmitted: (String val) {
+                                        _fname_FocusNode.unfocus();
+                                      },
+                                    ),
+                                  ),
+                                )),
+                              ]),
+                              StreamBuilder(
+                                stream: _wd_fname_Container_NavigationDataBLoC
+                                    .stream_counter,
+                                builder: (context,
+                                    AsyncSnapshot<NavigationData> snapshot) {
+                                  if (snapshot.hasError) {
+                                    return invisibleWidget();
+                                  }
+                                  switch (snapshot.connectionState) {
+                                    case ConnectionState.none:
+                                      return invisibleWidget();
+                                    case ConnectionState.waiting:
+                                      return invisibleWidget();
+                                    case ConnectionState.active:
+                                      return wd_Text_Widget_Form_Validator_Text(
+                                          snapshot);
+                                    case ConnectionState.done:
+                                      return wd_Text_Widget_Form_Validator_Text(
+                                          snapshot);
+                                  }
+                                },
+                              )
+                            ],
+                          )),*/
                       BlocBuilder<FarmRespJModelBloc, FarmRespJModelState>(
                           bloc: farmRespJModelBloc,
                           builder: (context, st) {
@@ -278,6 +398,8 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
                                         _fn_on_FarmListItem_Click,
                                     index: index,
                                     farmRespJModel: st.obj[index],
+                                    farmListItemDeleteCallback:
+                                        _fn_on_FarmListItem_Delete_Click,
                                   );
                                 },
                               );
@@ -293,13 +415,19 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
-                            width: MediaQuery.of(context).size.width / 5,
                             child: Material(
                               color: Colors.transparent,
                               child: InkWell(
                                 onTap: () {
                                   print('add vehicle');
-                                  _addFarm(context);
+                                  FarmRespJModel farmRespJModel =
+                                      FarmRespJModel();
+                                  farmRespJModel.farmer =
+                                      widget.farmerRespJModel.id;
+                                  _addFarm(
+                                    context,
+                                    farmRespJModel,
+                                  );
                                 },
                                 borderRadius: const BorderRadius.all(
                                   Radius.circular(43.0),
@@ -324,7 +452,11 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.only(
-                                        top: 3, bottom: 3),
+                                      top: 3,
+                                      bottom: 3,
+                                      left: 10,
+                                      right: 10,
+                                    ),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
@@ -363,14 +495,34 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
   //END OF BUILD FUNCTION WIDGETS
 
   //build widget actions
+  //data getters
+  _fnameChanged(String txt) {}
+  //end of data getters
   _fn_on_FarmListItem_Click(
     FarmRespJModel farmerRespJModel,
     int? index,
-  ) {}
+  ) {
+    //edit existing farm
+    _addFarm(
+      context,
+      farmerRespJModel,
+    );
+  }
 
-  _addFarm(BuildContext context) async {
-    FarmRespJModel farmRespJModel = FarmRespJModel();
-    farmRespJModel.farmer = widget.farmerRespJModel.id;
+  _fn_on_FarmListItem_Delete_Click(
+    FarmRespJModel farmerRespJModel,
+    int? index,
+  ) async {
+    //delete  farm
+    await _farmListVM?.deleteFarmlocal(farmerRespJModel.id!, context);
+    _farmListVM?.fetchFarmsFromFarmerlocal(
+        widget.farmerRespJModel.id!, context);
+  }
+
+  _addFarm(
+    BuildContext context,
+    FarmRespJModel farmRespJModel,
+  ) async {
     FarmRespJModel? saved_FarmRespJModel = await showGeneralDialog(
         barrierDismissible: true,
         barrierLabel:
@@ -388,9 +540,10 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
       print("saved_FarmRespJModel");
       if (widget.farmerRespJModel.id != null) {
         print("widget.farmerRespJModel.id != null");
-        _farmListVM?.fetchFarmsFromFarmer(widget.farmerRespJModel.id!);
+        _farmListVM?.fetchFarmsFromFarmerlocal(
+            widget.farmerRespJModel.id!, context);
       }
-    }else{
+    } else {
       print("!saved_FarmRespJModel");
     }
   }

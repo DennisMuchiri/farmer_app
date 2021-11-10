@@ -1,4 +1,5 @@
 import 'package:farmer_app/injection/injection.dart';
+import 'package:farmer_app/model/entities/moor/setup/AppDatabase.dart';
 import 'package:farmer_app/model/repository/remote/chopper/setup/post_api_service.dart';
 import 'package:farmer_app/view/screens/HomeScreen.dart';
 import 'package:farmer_app/view_model/bloc/counter/counter_bloc.dart';
@@ -42,7 +43,12 @@ class _MyAppState extends State<MyApp>
             return getIt<CounterChangeNotifier>();
           },
         ),*/
-
+        Provider(
+          create: (maincontext) {
+            AppDatabase appDatabase = AppDatabase();
+            return appDatabase;
+          },
+        ),
         Provider(
           create: (maincontext) => PostApiService.create(),
           dispose: (maincontext, PostApiService service) =>

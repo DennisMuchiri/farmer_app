@@ -9,6 +9,7 @@ part of 'FarmerRespJModel.dart';
 FarmerRespJModel _$FarmerRespJModelFromJson(Map<String, dynamic> json) =>
     FarmerRespJModel()
       ..id = json['id'] as int?
+      ..onlineid = json['onlineid'] as int?
       ..first_name = json['first_name'] as String?
       ..last_name = json['last_name'] as String?
       ..member_number = json['member_number'] as String?
@@ -18,11 +19,14 @@ FarmerRespJModel _$FarmerRespJModelFromJson(Map<String, dynamic> json) =>
       ..farms = (json['farms'] as List<dynamic>?)
           ?.map((e) => FarmRespJModel.fromJson(e as Map<String, dynamic>))
           .toList()
-      ..lv_index = json['lv_index'] as int?;
+      ..lv_index = json['lv_index'] as int?
+      ..issettobeupdated = json['issettobeupdated'] as bool?
+      ..deleted = json['deleted'] as bool?;
 
 Map<String, dynamic> _$FarmerRespJModelToJson(FarmerRespJModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'onlineid': instance.onlineid,
       'first_name': instance.first_name,
       'last_name': instance.last_name,
       'member_number': instance.member_number,
@@ -31,4 +35,6 @@ Map<String, dynamic> _$FarmerRespJModelToJson(FarmerRespJModel instance) =>
       'email': instance.email,
       'farms': instance.farms,
       'lv_index': instance.lv_index,
+      'issettobeupdated': instance.issettobeupdated,
+      'deleted': instance.deleted,
     };

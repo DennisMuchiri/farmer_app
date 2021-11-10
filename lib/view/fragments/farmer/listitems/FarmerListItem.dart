@@ -177,11 +177,9 @@ class _FiberProjectListItemState extends State<FarmerListItem>
                                                 padding:
                                                     EdgeInsets.only(top: 5),
                                                 child: Text(
-                                                    widget.farmerRespJModel
-                                                            .first_name! +
-                                                        " " +
-                                                        widget.farmerRespJModel
-                                                            .last_name!,
+                                                    ((widget.farmerRespJModel.first_name != null ? widget.farmerRespJModel.first_name! : ''))+
+                                                    ' '+
+                                                        ((widget.farmerRespJModel.last_name != null ? widget.farmerRespJModel.last_name! : '')),
                                                     style: const TextStyle(
                                                       fontFamily: FarmerAppTheme
                                                           .font_AvenirLTStd_Medium,
@@ -194,12 +192,12 @@ class _FiberProjectListItemState extends State<FarmerListItem>
                                                     )),
                                               ),
                                               ((isStringValid(widget
-                                                      .farmerRespJModel.gender!)
+                                                      .farmerRespJModel.gender)
                                                   ? Text(
                                                       'Gender : ' +
-                                                          widget
-                                                              .farmerRespJModel
-                                                              .gender!,
+                                                          ((widget.farmerRespJModel
+                                                                  .gender ??
+                                                              '')),
                                                       style: const TextStyle(
                                                         fontFamily: FarmerAppTheme
                                                             .font_AvenirLTStd_Book,
@@ -214,12 +212,12 @@ class _FiberProjectListItemState extends State<FarmerListItem>
                                                   : invisibleWidget())),
                                               ((isStringValid(widget
                                                       .farmerRespJModel
-                                                      .member_number!)
+                                                      .member_number)
                                                   ? Text(
                                                       'Member No : ' +
-                                                          widget
-                                                              .farmerRespJModel
-                                                              .member_number!,
+                                                          ((widget.farmerRespJModel
+                                                                  .member_number ??
+                                                              '')),
                                                       style: const TextStyle(
                                                         fontFamily: FarmerAppTheme
                                                             .font_AvenirLTStd_Book,

@@ -104,8 +104,12 @@ class _FarmerListScreenState extends State<FarmerListScreen>
   _setUpData(BuildContext context) async {
     //load data
     //this should be moved to it's own isolate
-    await req_fetch_farmers(true);
-    farmerListVM?.fetchFarmers(null);
+    await req_fetch_farmers(
+      true,
+      context,
+    );
+    print("_setUpData");
+    farmerListVM?.fetchFarmerslocal(context);
     //end of load data
   }
   //END OF AFTER FIRST LAYOUT FUNCTIONS
@@ -350,8 +354,12 @@ class _FarmerListScreenState extends State<FarmerListScreen>
                                 autofocus: false,
                                 onTap: () {},
                                 onChanged: (String txt) {
-                                  farmerListVM?.searchFarmers(
-                                      _searchTextEditingController.text);
+                                  print(' _searchTextEditingController.text');
+                                  print(_searchTextEditingController.text);
+                                  farmerListVM?.searchFarmerslocal(
+                                    _searchTextEditingController.text,
+                                    context,
+                                  );
                                 },
                               ),
                             ),

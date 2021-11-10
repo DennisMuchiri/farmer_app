@@ -7,6 +7,7 @@ part 'FarmerRespJModel.g.dart';
 @JsonSerializable()
 class FarmerRespJModel {
   int? id;
+  int? onlineid;
   String? first_name;
   String? last_name;
   String? member_number;
@@ -17,6 +18,8 @@ class FarmerRespJModel {
 
   //layout
   int? lv_index;
+  bool? issettobeupdated;
+  bool? deleted;
 
   FarmerRespJModel() {}
   factory FarmerRespJModel.fromJson(Map<String, dynamic> json) =>
