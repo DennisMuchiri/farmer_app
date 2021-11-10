@@ -51,7 +51,7 @@ class _FarmerListScreenState extends State<FarmerListScreen>
 
   //state changers
   FarmerRespJModelBloc farmerRespJModelBloc = FarmerRespJModelBloc();
-  FarmerListVM? farmerListVM;
+  FarmerListVM? _farmerListVM;
   //end of state changers
 
   @override
@@ -88,7 +88,7 @@ class _FarmerListScreenState extends State<FarmerListScreen>
     });
 
     //set up viewmodels
-    farmerListVM = FarmerListVM(farmerRespJModelBloc: farmerRespJModelBloc);
+    _farmerListVM = FarmerListVM(farmerRespJModelBloc: farmerRespJModelBloc);
 
     //enad of set up viewmodels
 
@@ -109,7 +109,7 @@ class _FarmerListScreenState extends State<FarmerListScreen>
       context,
     );
     print("_setUpData");
-    farmerListVM?.fetchFarmerslocal(context);
+    _farmerListVM?.fetchFarmerslocal(context);
     //end of load data
   }
   //END OF AFTER FIRST LAYOUT FUNCTIONS
@@ -268,6 +268,8 @@ class _FarmerListScreenState extends State<FarmerListScreen>
                                       _fn_on_FarmerListItem_Click,
                                   index: index,
                                   farmerRespJModel: st.obj[index],
+                                  farmerListItemDeleteCallback:
+                                      _fn_on_FarmerListItem_Delete_Click,
                                 );
                               },
                             );
@@ -356,7 +358,7 @@ class _FarmerListScreenState extends State<FarmerListScreen>
                                 onChanged: (String txt) {
                                   print(' _searchTextEditingController.text');
                                   print(_searchTextEditingController.text);
-                                  farmerListVM?.searchFarmerslocal(
+                                  _farmerListVM?.searchFarmerslocal(
                                     _searchTextEditingController.text,
                                     context,
                                   );
@@ -420,6 +422,15 @@ class _FarmerListScreenState extends State<FarmerListScreen>
     NavigationdrawerBloc navigationdrawerBloc =
         BlocProvider.of<NavigationdrawerBloc>(context);
     navigationdrawerBloc.add(NavDrawer(navigationData));
+  }
+
+  _fn_on_FarmerListItem_Delete_Click(
+    FarmerRespJModel farmerRespJModel,
+    int? index,
+  ) async {
+    //delete  farmer
+    await _farmerListVM?.deleteFarmerlocal(farmerRespJModel.id!, context);
+    _farmerListVM?.fetchFarmerslocal(context);
   }
   //end of build widget actions
 

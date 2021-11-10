@@ -124,6 +124,20 @@ class MrfarmerDao extends DatabaseAccessor<AppDatabase>
     /*});*/
   }
 
+  Future<bool> softdeleteMrfarmersCompanion(int mfarmerid) async {
+    Mrfarmer? mf;
+    if (mfarmerid != null) {
+      mf = await getMrfarmerById(mfarmerid);
+    }
+
+    if (mf != null) {
+      mf = mf.copyWith(deleted: true);
+      await update(mrfarmers).replace(mf);
+    }
+
+    return true;
+  }
+
   Future<bool> updateAllMrfarmers(
       List<Mrfarmer> onlineuserCompanionList) async {
     for (Mrfarmer smc in onlineuserCompanionList) {
@@ -167,14 +181,13 @@ class MrfarmerDao extends DatabaseAccessor<AppDatabase>
 
     if (mf != null) {
       mf = mf.copyWith(
-        first_name:
-        ((cin.first_name != null ? cin.first_name.value : null)),
+        first_name: ((cin.first_name != null ? cin.first_name.value : null)),
         last_name: ((cin.last_name != null ? cin.last_name.value : null)),
         member_number:
-        ((cin.member_number != null ? cin.member_number.value : null)),
+            ((cin.member_number != null ? cin.member_number.value : null)),
         gender: ((cin.gender != null ? cin.gender.value : null)),
         phone_number:
-        ((cin.phone_number != null ? cin.phone_number.value : null)),
+            ((cin.phone_number != null ? cin.phone_number.value : null)),
         email: ((cin.email != null ? cin.email.value : null)),
         issettobeupdated: true,
         deleted: ((cin.deleted != null ? cin.deleted.value : false)),
@@ -185,6 +198,23 @@ class MrfarmerDao extends DatabaseAccessor<AppDatabase>
       await update(mrfarmers).replace(mf);
     }
     return true;
+  }
+
+  Future<List<Mrfarmer>> getMrfarmersByActive() {
+    String TAG = 'getMrfarmersByActive:';
+    //is not deleted
+    return (select(mrfarmers)
+          ..where((t) => (t.deleted.equals(null) | t.deleted.equals(false))))
+        .get()
+        .then((List<Mrfarmer> reslist) {
+      if (reslist.length > 0) {
+        return reslist;
+      } else {
+        return [];
+      }
+    }, onError: (error) {
+      return [];
+    });
   }
 
   Future deleteAllMrfarmersFuture(List<Mrfarmer> onlineuserList) async {
