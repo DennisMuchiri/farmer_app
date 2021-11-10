@@ -14,6 +14,7 @@ class FarmerAppTheme {
   static const Color lma_purple = Color(0xFF6C66A9);
   static const Color transparent = Colors.transparent;
   static const Color lma_purple_2 = Color(0xFF404260);
+
   static const Color lma_blue_1 = Color(0xFF9CE7F2);
   static const Color lma_grey_op_05= Color(0xFF9FA8AF);
   static const Color darkText = Color(0xFF253840);

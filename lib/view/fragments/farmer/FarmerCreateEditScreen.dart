@@ -4,9 +4,11 @@ import 'package:farmer_app/model/model/jsonserializable/api/from/farmer/FarmResp
 import 'package:farmer_app/model/model/jsonserializable/api/from/farmer/FarmerRespJModel.dart';
 import 'package:farmer_app/model/repository/remote/chopper/functions/fetch/fetch_farmers.dart';
 import 'package:farmer_app/utils/functions/common_functions.dart';
+import 'package:farmer_app/utils/functions/validators.dart';
 import 'package:farmer_app/utils/statics/farmer_app_static_params.dart';
 import 'package:farmer_app/utils/themes/farmer_app_theme.dart';
 import 'package:farmer_app/view/common/common_widgets.dart';
+import 'package:farmer_app/view/custom/columnbuilder/column_builder.dart';
 import 'package:farmer_app/view/custom/title/CustomTitleView.dart';
 import 'package:farmer_app/view/dialogs/AddFarmDialog.dart';
 import 'package:farmer_app/view/fragments/farmer/listitems/FarmListItem.dart';
@@ -71,6 +73,35 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
   FocusNode _fname_FocusNode = FocusNode();
   NavigationDataBLoC _wd_fname_Container_NavigationDataBLoC =
       NavigationDataBLoC();
+  //lname
+  TextEditingController _lname_txt_Controller = TextEditingController();
+  FocusNode _lname_FocusNode = FocusNode();
+  NavigationDataBLoC _wd_lname_Container_NavigationDataBLoC =
+      NavigationDataBLoC();
+
+  //memberno
+  TextEditingController _memberno_txt_Controller = TextEditingController();
+  FocusNode _memberno_FocusNode = FocusNode();
+  NavigationDataBLoC _wd_memberno_Container_NavigationDataBLoC =
+      NavigationDataBLoC();
+
+  //gender
+  TextEditingController _gender_txt_Controller = TextEditingController();
+  FocusNode _gender_FocusNode = FocusNode();
+  NavigationDataBLoC _wd_gender_Container_NavigationDataBLoC =
+      NavigationDataBLoC();
+
+  //phone
+  TextEditingController _phone_txt_Controller = TextEditingController();
+  FocusNode _phone_FocusNode = FocusNode();
+  NavigationDataBLoC _wd_phone_Container_NavigationDataBLoC =
+      NavigationDataBLoC();
+
+  //email
+  TextEditingController _email_txt_Controller = TextEditingController();
+  FocusNode _email_FocusNode = FocusNode();
+  NavigationDataBLoC _wd_email_Container_NavigationDataBLoC =
+      NavigationDataBLoC();
 
   @override
   void initState() {
@@ -129,6 +160,29 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
   //AFTER FIRST LAYOUT FUNCTIONS
   _setUpData(BuildContext context) async {
     //load data
+    if (isStringValid(widget.farmerRespJModel.first_name)) {
+      _fname_txt_Controller.text = widget.farmerRespJModel.first_name!;
+    }
+    if (isStringValid(widget.farmerRespJModel.last_name)) {
+      _lname_txt_Controller.text = widget.farmerRespJModel.last_name!;
+    }
+
+    if (isStringValid(widget.farmerRespJModel.member_number)) {
+      _memberno_txt_Controller.text = widget.farmerRespJModel.member_number!;
+    }
+
+    if (isStringValid(widget.farmerRespJModel.gender)) {
+      _gender_txt_Controller.text = widget.farmerRespJModel.gender!;
+    }
+
+    if (isStringValid(widget.farmerRespJModel.phone_number)) {
+      _phone_txt_Controller.text = widget.farmerRespJModel.phone_number!;
+    }
+
+    if (isStringValid(widget.farmerRespJModel.email)) {
+      _email_txt_Controller.text = widget.farmerRespJModel.email!;
+    }
+
     if (widget.farmerRespJModel.id != null) {
       _farmListVM?.fetchFarmsFromFarmerlocal(
           widget.farmerRespJModel.id!, context);
@@ -238,9 +292,11 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
                       color: FarmerAppTheme.grey,
                     ),
                   ),
-                  child: ListView(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    /* ListView(
                     controller: _scrollController,
-                    shrinkWrap: true,
+                    shrinkWrap: false,
                     padding: EdgeInsets.only(
                       top: //MediaQuery.of(context).padding.top,
                           AppBar().preferredSize.height +
@@ -248,244 +304,904 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
                               24,
                       bottom: 62,
                     ),
-                    scrollDirection: Axis.vertical,
-                    children: <Widget>[
-                      CustomTitleView(
-                        titleTxt: 'Farmer details',
-                        subTxt: '',
-                        animation: Tween<double>(begin: 0.0, end: 1.0).animate(
-                            CurvedAnimation(
-                                parent: _animationController!,
-                                curve: Interval(
-                                    (1 /
-                                            FarmerAppStaticParams
-                                                .mainui_lv_itemscount) *
-                                        0,
-                                    1.0,
-                                    curve: Curves.fastOutSlowIn))),
-                        animationController: _animationController,
-                        titleTextStyle: TextStyle(
-                          fontFamily: FarmerAppTheme.font_AvenirLTStd_Heavy,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18,
-                          letterSpacing: 0.5,
-                          color: FarmerAppTheme.lma_purple_2,
-                        ),
+                    scrollDirection: Axis.vertical,*/
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        top: AppBar().preferredSize.height +
+                            //MediaQuery.of(context).padding.top +
+                            24,
+                        bottom: 62,
                       ),
-                      /* Padding(
-                        padding: const EdgeInsets.only(
-                            left: 4, right: 16, top: 8, bottom: 3),
-                        child: Text(
-                          'First name',
-                          style: TextStyle(
-                            fontFamily: FarmerAppTheme.font_AvenirLTStd_Medium,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            letterSpacing: 0.0,
-                            color: FarmerAppTheme.pltf_grey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          CustomTitleView(
+                            titleTxt: 'Farmer details',
+                            subTxt: '',
+                            animation: Tween<double>(begin: 0.0, end: 1.0)
+                                .animate(CurvedAnimation(
+                                    parent: _animationController!,
+                                    curve: Interval(
+                                        (1 /
+                                                FarmerAppStaticParams
+                                                    .mainui_lv_itemscount) *
+                                            0,
+                                        1.0,
+                                        curve: Curves.fastOutSlowIn))),
+                            animationController: _animationController,
+                            titleTextStyle: TextStyle(
+                              fontFamily: FarmerAppTheme.font_AvenirLTStd_Heavy,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
+                              letterSpacing: 0.5,
+                              color: FarmerAppTheme.lma_purple_2,
+                            ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.only(top: 0, bottom: 0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Row(children: <Widget>[
-                                Expanded(
-                                    child: Container(
-                                  decoration: BoxDecoration(
-                                    color: FarmerAppTheme.white,
-                                    borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(8.0),
-                                        bottomLeft: Radius.circular(8.0),
-                                        bottomRight: Radius.circular(8.0),
-                                        topRight: Radius.circular(8.0)),
-                                    boxShadow: <BoxShadow>[
-                                      BoxShadow(
-                                          color: Colors.grey.withOpacity(0.2),
-                                          offset: const Offset(0.3, 2),
-                                          blurRadius: 4.0),
-                                    ],
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 4, right: 4, top: 0, bottom: 0),
-                                    child: TextFormField(
-                                      keyboardType: TextInputType.name,
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 24, right: 24, top: 8, bottom: 0),
+                            child: Text(
+                              'First name',
+                              style: TextStyle(
+                                fontFamily:
+                                    FarmerAppTheme.font_AvenirLTStd_Medium,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                letterSpacing: 0.0,
+                                color: FarmerAppTheme.grey,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 24),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Row(children: <Widget>[
+                                    Expanded(
+                                        child: Container(
+                                      decoration: BoxDecoration(
+                                        color: FarmerAppTheme.white,
+                                        borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(8.0),
+                                            bottomLeft: Radius.circular(8.0),
+                                            bottomRight: Radius.circular(8.0),
+                                            topRight: Radius.circular(8.0)),
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              offset: const Offset(0.3, 2),
+                                              blurRadius: 4.0),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 4,
+                                            right: 4,
+                                            top: 0,
+                                            bottom: 0),
+                                        child: TextFormField(
+                                          keyboardType: TextInputType.name,
+                                          style: TextStyle(
+                                            fontFamily: FarmerAppTheme
+                                                .font_AvenirLTStd_Medium,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
+                                            letterSpacing: 0.0,
+                                            color: FarmerAppTheme.darkText,
+                                          ),
+                                          cursorColor:
+                                              Colors.grey.withOpacity(0.6),
+                                          decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText: "First name",
+                                            hintStyle: TextStyle(
+                                              fontFamily: FarmerAppTheme
+                                                  .font_AvenirLTStd_Book,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14,
+                                              letterSpacing: 0.0,
+                                              color: FarmerAppTheme.darkText,
+                                            ),
+                                            errorStyle: TextStyle(
+                                                color: FarmerAppTheme.red,
+                                                fontSize: 12.0,
+                                                fontFamily: FarmerAppTheme
+                                                    .font_AvenirLTStd_Light),
+                                            prefixIcon: Icon(
+                                              Icons.edit,
+                                              color: FarmerAppTheme.darkText,
+                                              size: 15.0,
+                                            ),
+                                          ),
+                                          textInputAction: TextInputAction.next,
+                                          onChanged: (String val) {
+                                            _fnameChanged(val);
+                                          },
+                                          controller: _fname_txt_Controller,
+                                          focusNode: _fname_FocusNode,
+                                          autofocus: false,
+                                          onFieldSubmitted: (String val) {
+                                            _fname_FocusNode.unfocus();
+                                          },
+                                        ),
+                                      ),
+                                    )),
+                                  ]),
+                                  StreamBuilder(
+                                    stream:
+                                        _wd_fname_Container_NavigationDataBLoC
+                                            .stream_counter,
+                                    builder: (context,
+                                        AsyncSnapshot<NavigationData>
+                                            snapshot) {
+                                      if (snapshot.hasError) {
+                                        return invisibleWidget();
+                                      }
+                                      switch (snapshot.connectionState) {
+                                        case ConnectionState.none:
+                                          return invisibleWidget();
+                                        case ConnectionState.waiting:
+                                          return invisibleWidget();
+                                        case ConnectionState.active:
+                                          return wd_Text_Widget_Form_Validator_Text(
+                                              snapshot);
+                                        case ConnectionState.done:
+                                          return wd_Text_Widget_Form_Validator_Text(
+                                              snapshot);
+                                      }
+                                    },
+                                  )
+                                ],
+                              )),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 24, right: 24, top: 5, bottom: 0),
+                            child: Text(
+                              'Last name',
+                              style: TextStyle(
+                                fontFamily:
+                                    FarmerAppTheme.font_AvenirLTStd_Medium,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                letterSpacing: 0.0,
+                                color: FarmerAppTheme.grey,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 24),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Row(children: <Widget>[
+                                    Expanded(
+                                        child: Container(
+                                      decoration: BoxDecoration(
+                                        color: FarmerAppTheme.white,
+                                        borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(8.0),
+                                            bottomLeft: Radius.circular(8.0),
+                                            bottomRight: Radius.circular(8.0),
+                                            topRight: Radius.circular(8.0)),
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              offset: const Offset(0.3, 2),
+                                              blurRadius: 4.0),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 4,
+                                            right: 4,
+                                            top: 0,
+                                            bottom: 0),
+                                        child: TextFormField(
+                                          keyboardType: TextInputType.name,
+                                          style: TextStyle(
+                                            fontFamily: FarmerAppTheme
+                                                .font_AvenirLTStd_Medium,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
+                                            letterSpacing: 0.0,
+                                            color: FarmerAppTheme.darkText,
+                                          ),
+                                          cursorColor:
+                                              Colors.grey.withOpacity(0.6),
+                                          decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText: "Last name",
+                                            hintStyle: TextStyle(
+                                              fontFamily: FarmerAppTheme
+                                                  .font_AvenirLTStd_Book,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14,
+                                              letterSpacing: 0.0,
+                                              color: FarmerAppTheme.darkText,
+                                            ),
+                                            errorStyle: TextStyle(
+                                                color: FarmerAppTheme.red,
+                                                fontSize: 12.0,
+                                                fontFamily: FarmerAppTheme
+                                                    .font_AvenirLTStd_Light),
+                                            prefixIcon: Icon(
+                                              Icons.edit,
+                                              color: FarmerAppTheme.darkText,
+                                              size: 15.0,
+                                            ),
+                                          ),
+                                          textInputAction: TextInputAction.next,
+                                          onChanged: (String val) {
+                                            _lnameChanged(val);
+                                          },
+                                          controller: _lname_txt_Controller,
+                                          focusNode: _lname_FocusNode,
+                                          autofocus: false,
+                                          onFieldSubmitted: (String val) {
+                                            _lname_FocusNode.unfocus();
+                                          },
+                                        ),
+                                      ),
+                                    )),
+                                  ]),
+                                  StreamBuilder(
+                                    stream:
+                                        _wd_lname_Container_NavigationDataBLoC
+                                            .stream_counter,
+                                    builder: (context,
+                                        AsyncSnapshot<NavigationData>
+                                            snapshot) {
+                                      if (snapshot.hasError) {
+                                        return invisibleWidget();
+                                      }
+                                      switch (snapshot.connectionState) {
+                                        case ConnectionState.none:
+                                          return invisibleWidget();
+                                        case ConnectionState.waiting:
+                                          return invisibleWidget();
+                                        case ConnectionState.active:
+                                          return wd_Text_Widget_Form_Validator_Text(
+                                              snapshot);
+                                        case ConnectionState.done:
+                                          return wd_Text_Widget_Form_Validator_Text(
+                                              snapshot);
+                                      }
+                                    },
+                                  )
+                                ],
+                              )),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 24, right: 24, top: 5, bottom: 0),
+                            child: Text(
+                              'Member No',
+                              style: TextStyle(
+                                fontFamily:
+                                    FarmerAppTheme.font_AvenirLTStd_Medium,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                letterSpacing: 0.0,
+                                color: FarmerAppTheme.grey,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 24),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Row(children: <Widget>[
+                                    Expanded(
+                                        child: Container(
+                                      decoration: BoxDecoration(
+                                        color: FarmerAppTheme.white,
+                                        borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(8.0),
+                                            bottomLeft: Radius.circular(8.0),
+                                            bottomRight: Radius.circular(8.0),
+                                            topRight: Radius.circular(8.0)),
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              offset: const Offset(0.3, 2),
+                                              blurRadius: 4.0),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 4,
+                                            right: 4,
+                                            top: 0,
+                                            bottom: 0),
+                                        child: TextFormField(
+                                          keyboardType: TextInputType.name,
+                                          style: TextStyle(
+                                            fontFamily: FarmerAppTheme
+                                                .font_AvenirLTStd_Medium,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
+                                            letterSpacing: 0.0,
+                                            color: FarmerAppTheme.darkText,
+                                          ),
+                                          cursorColor:
+                                              Colors.grey.withOpacity(0.6),
+                                          decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText: "Member No",
+                                            hintStyle: TextStyle(
+                                              fontFamily: FarmerAppTheme
+                                                  .font_AvenirLTStd_Book,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14,
+                                              letterSpacing: 0.0,
+                                              color: FarmerAppTheme.darkText,
+                                            ),
+                                            errorStyle: TextStyle(
+                                                color: FarmerAppTheme.red,
+                                                fontSize: 12.0,
+                                                fontFamily: FarmerAppTheme
+                                                    .font_AvenirLTStd_Light),
+                                            prefixIcon: Icon(
+                                              Icons.edit,
+                                              color: FarmerAppTheme.darkText,
+                                              size: 15.0,
+                                            ),
+                                          ),
+                                          textInputAction: TextInputAction.next,
+                                          onChanged: (String val) {
+                                            _membernoChanged(val);
+                                          },
+                                          controller: _memberno_txt_Controller,
+                                          focusNode: _memberno_FocusNode,
+                                          autofocus: false,
+                                          onFieldSubmitted: (String val) {
+                                            _memberno_FocusNode.unfocus();
+                                          },
+                                        ),
+                                      ),
+                                    )),
+                                  ]),
+                                  StreamBuilder(
+                                    stream:
+                                        _wd_memberno_Container_NavigationDataBLoC
+                                            .stream_counter,
+                                    builder: (context,
+                                        AsyncSnapshot<NavigationData>
+                                            snapshot) {
+                                      if (snapshot.hasError) {
+                                        return invisibleWidget();
+                                      }
+                                      switch (snapshot.connectionState) {
+                                        case ConnectionState.none:
+                                          return invisibleWidget();
+                                        case ConnectionState.waiting:
+                                          return invisibleWidget();
+                                        case ConnectionState.active:
+                                          return wd_Text_Widget_Form_Validator_Text(
+                                              snapshot);
+                                        case ConnectionState.done:
+                                          return wd_Text_Widget_Form_Validator_Text(
+                                              snapshot);
+                                      }
+                                    },
+                                  )
+                                ],
+                              )),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 24, right: 24, top: 5, bottom: 0),
+                            child: Text(
+                              'Gender',
+                              style: TextStyle(
+                                fontFamily:
+                                    FarmerAppTheme.font_AvenirLTStd_Medium,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                letterSpacing: 0.0,
+                                color: FarmerAppTheme.grey,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 24),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Row(children: <Widget>[
+                                    Expanded(
+                                        child: Container(
+                                      decoration: BoxDecoration(
+                                        color: FarmerAppTheme.white,
+                                        borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(8.0),
+                                            bottomLeft: Radius.circular(8.0),
+                                            bottomRight: Radius.circular(8.0),
+                                            topRight: Radius.circular(8.0)),
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              offset: const Offset(0.3, 2),
+                                              blurRadius: 4.0),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 4,
+                                            right: 4,
+                                            top: 0,
+                                            bottom: 0),
+                                        child: TextFormField(
+                                          keyboardType: TextInputType.name,
+                                          style: TextStyle(
+                                            fontFamily: FarmerAppTheme
+                                                .font_AvenirLTStd_Medium,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
+                                            letterSpacing: 0.0,
+                                            color: FarmerAppTheme.darkText,
+                                          ),
+                                          cursorColor:
+                                              Colors.grey.withOpacity(0.6),
+                                          decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText: "Gender",
+                                            hintStyle: TextStyle(
+                                              fontFamily: FarmerAppTheme
+                                                  .font_AvenirLTStd_Book,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14,
+                                              letterSpacing: 0.0,
+                                              color: FarmerAppTheme.darkText,
+                                            ),
+                                            errorStyle: TextStyle(
+                                                color: FarmerAppTheme.red,
+                                                fontSize: 12.0,
+                                                fontFamily: FarmerAppTheme
+                                                    .font_AvenirLTStd_Light),
+                                            prefixIcon: Icon(
+                                              Icons.edit,
+                                              color: FarmerAppTheme.darkText,
+                                              size: 15.0,
+                                            ),
+                                          ),
+                                          textInputAction: TextInputAction.next,
+                                          onChanged: (String val) {
+                                            _genderChanged(val);
+                                          },
+                                          controller: _gender_txt_Controller,
+                                          focusNode: _gender_FocusNode,
+                                          autofocus: false,
+                                          onFieldSubmitted: (String val) {
+                                            _gender_FocusNode.unfocus();
+                                          },
+                                        ),
+                                      ),
+                                    )),
+                                  ]),
+                                  StreamBuilder(
+                                    stream:
+                                        _wd_gender_Container_NavigationDataBLoC
+                                            .stream_counter,
+                                    builder: (context,
+                                        AsyncSnapshot<NavigationData>
+                                            snapshot) {
+                                      if (snapshot.hasError) {
+                                        return invisibleWidget();
+                                      }
+                                      switch (snapshot.connectionState) {
+                                        case ConnectionState.none:
+                                          return invisibleWidget();
+                                        case ConnectionState.waiting:
+                                          return invisibleWidget();
+                                        case ConnectionState.active:
+                                          return wd_Text_Widget_Form_Validator_Text(
+                                              snapshot);
+                                        case ConnectionState.done:
+                                          return wd_Text_Widget_Form_Validator_Text(
+                                              snapshot);
+                                      }
+                                    },
+                                  )
+                                ],
+                              )),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 24, right: 24, top: 5, bottom: 0),
+                            child: Text(
+                              'Phone No',
+                              style: TextStyle(
+                                fontFamily:
+                                    FarmerAppTheme.font_AvenirLTStd_Medium,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                letterSpacing: 0.0,
+                                color: FarmerAppTheme.grey,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 24),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Row(children: <Widget>[
+                                    Expanded(
+                                        child: Container(
+                                      decoration: BoxDecoration(
+                                        color: FarmerAppTheme.white,
+                                        borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(8.0),
+                                            bottomLeft: Radius.circular(8.0),
+                                            bottomRight: Radius.circular(8.0),
+                                            topRight: Radius.circular(8.0)),
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              offset: const Offset(0.3, 2),
+                                              blurRadius: 4.0),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 4,
+                                            right: 4,
+                                            top: 0,
+                                            bottom: 0),
+                                        child: TextFormField(
+                                          keyboardType: TextInputType.name,
+                                          style: TextStyle(
+                                            fontFamily: FarmerAppTheme
+                                                .font_AvenirLTStd_Medium,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
+                                            letterSpacing: 0.0,
+                                            color: FarmerAppTheme.darkText,
+                                          ),
+                                          cursorColor:
+                                              Colors.grey.withOpacity(0.6),
+                                          decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText: "Phone No",
+                                            hintStyle: TextStyle(
+                                              fontFamily: FarmerAppTheme
+                                                  .font_AvenirLTStd_Book,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14,
+                                              letterSpacing: 0.0,
+                                              color: FarmerAppTheme.darkText,
+                                            ),
+                                            errorStyle: TextStyle(
+                                                color: FarmerAppTheme.red,
+                                                fontSize: 12.0,
+                                                fontFamily: FarmerAppTheme
+                                                    .font_AvenirLTStd_Light),
+                                            prefixIcon: Icon(
+                                              Icons.edit,
+                                              color: FarmerAppTheme.darkText,
+                                              size: 15.0,
+                                            ),
+                                          ),
+                                          textInputAction: TextInputAction.next,
+                                          onChanged: (String val) {
+                                            _phoneChanged(val);
+                                          },
+                                          controller: _phone_txt_Controller,
+                                          focusNode: _phone_FocusNode,
+                                          autofocus: false,
+                                          onFieldSubmitted: (String val) {
+                                            _phone_FocusNode.unfocus();
+                                          },
+                                        ),
+                                      ),
+                                    )),
+                                  ]),
+                                  StreamBuilder(
+                                    stream:
+                                        _wd_phone_Container_NavigationDataBLoC
+                                            .stream_counter,
+                                    builder: (context,
+                                        AsyncSnapshot<NavigationData>
+                                            snapshot) {
+                                      if (snapshot.hasError) {
+                                        return invisibleWidget();
+                                      }
+                                      switch (snapshot.connectionState) {
+                                        case ConnectionState.none:
+                                          return invisibleWidget();
+                                        case ConnectionState.waiting:
+                                          return invisibleWidget();
+                                        case ConnectionState.active:
+                                          return wd_Text_Widget_Form_Validator_Text(
+                                              snapshot);
+                                        case ConnectionState.done:
+                                          return wd_Text_Widget_Form_Validator_Text(
+                                              snapshot);
+                                      }
+                                    },
+                                  )
+                                ],
+                              )),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 24, right: 24, top: 5, bottom: 0),
+                            child: Text(
+                              'Email',
+                              style: TextStyle(
+                                fontFamily:
+                                    FarmerAppTheme.font_AvenirLTStd_Medium,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                letterSpacing: 0.0,
+                                color: FarmerAppTheme.grey,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 24),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Row(children: <Widget>[
+                                    Expanded(
+                                        child: Container(
+                                      decoration: BoxDecoration(
+                                        color: FarmerAppTheme.white,
+                                        borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(8.0),
+                                            bottomLeft: Radius.circular(8.0),
+                                            bottomRight: Radius.circular(8.0),
+                                            topRight: Radius.circular(8.0)),
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              offset: const Offset(0.3, 2),
+                                              blurRadius: 4.0),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 4,
+                                            right: 4,
+                                            top: 0,
+                                            bottom: 0),
+                                        child: TextFormField(
+                                          keyboardType: TextInputType.name,
+                                          style: TextStyle(
+                                            fontFamily: FarmerAppTheme
+                                                .font_AvenirLTStd_Medium,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
+                                            letterSpacing: 0.0,
+                                            color: FarmerAppTheme.darkText,
+                                          ),
+                                          cursorColor:
+                                              Colors.grey.withOpacity(0.6),
+                                          decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText: "Email",
+                                            hintStyle: TextStyle(
+                                              fontFamily: FarmerAppTheme
+                                                  .font_AvenirLTStd_Book,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14,
+                                              letterSpacing: 0.0,
+                                              color: FarmerAppTheme.darkText,
+                                            ),
+                                            errorStyle: TextStyle(
+                                                color: FarmerAppTheme.red,
+                                                fontSize: 12.0,
+                                                fontFamily: FarmerAppTheme
+                                                    .font_AvenirLTStd_Light),
+                                            prefixIcon: Icon(
+                                              Icons.edit,
+                                              color: FarmerAppTheme.darkText,
+                                              size: 15.0,
+                                            ),
+                                          ),
+                                          textInputAction: TextInputAction.next,
+                                          onChanged: (String val) {
+                                            _emailChanged(val);
+                                          },
+                                          controller: _email_txt_Controller,
+                                          focusNode: _email_FocusNode,
+                                          autofocus: false,
+                                          onFieldSubmitted: (String val) {
+                                            _email_FocusNode.unfocus();
+                                          },
+                                        ),
+                                      ),
+                                    )),
+                                  ]),
+                                  StreamBuilder(
+                                    stream:
+                                        _wd_email_Container_NavigationDataBLoC
+                                            .stream_counter,
+                                    builder: (context,
+                                        AsyncSnapshot<NavigationData>
+                                            snapshot) {
+                                      if (snapshot.hasError) {
+                                        return invisibleWidget();
+                                      }
+                                      switch (snapshot.connectionState) {
+                                        case ConnectionState.none:
+                                          return invisibleWidget();
+                                        case ConnectionState.waiting:
+                                          return invisibleWidget();
+                                        case ConnectionState.active:
+                                          return wd_Text_Widget_Form_Validator_Text(
+                                              snapshot);
+                                        case ConnectionState.done:
+                                          return wd_Text_Widget_Form_Validator_Text(
+                                              snapshot);
+                                      }
+                                    },
+                                  )
+                                ],
+                              )),
+                          const SizedBox(
+                            height: 7,
+                          ),
+                          BlocBuilder<FarmRespJModelBloc, FarmRespJModelState>(
+                              bloc: farmRespJModelBloc,
+                              builder: (context, st) {
+                                if (st != null &&
+                                    st is FarmRespJModelLoaded &&
+                                    st.obj.length > 0) {
+                                  return const Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 24, right: 24, top: 5, bottom: 0),
+                                    child: Text(
+                                      'Farms',
                                       style: TextStyle(
                                         fontFamily: FarmerAppTheme
                                             .font_AvenirLTStd_Medium,
                                         fontWeight: FontWeight.w500,
                                         fontSize: 14,
                                         letterSpacing: 0.0,
-                                        color: FarmerAppTheme.darkText,
+                                        color: FarmerAppTheme.lma_purple_2,
                                       ),
-                                      cursorColor: Colors.grey.withOpacity(0.6),
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: "First name",
-                                        hintStyle: TextStyle(
-                                          fontFamily: FarmerAppTheme
-                                              .font_AvenirLTStd_Book,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14,
-                                          letterSpacing: 0.0,
-                                          color: FarmerAppTheme.darkText,
+                                    ),
+                                  );
+                                } else {
+                                  return invisibleWidget();
+                                }
+                              }),
+                          BlocBuilder<FarmRespJModelBloc, FarmRespJModelState>(
+                              bloc: farmRespJModelBloc,
+                              builder: (context, st) {
+                                if (st is FarmRespJModelLoaded) {
+                                  return ColumnBuilder(
+                                      itemCount: st.obj.length,
+                                      mainAxisSize: MainAxisSize.min,
+                                      itemBuilder: (context, index) {
+                                        return FarmListItem(
+                                          animationController:
+                                              _animationController,
+                                          farmerListItemCallback:
+                                              _fn_on_FarmListItem_Click,
+                                          index: index,
+                                          farmRespJModel: st.obj[index],
+                                          farmListItemDeleteCallback:
+                                              _fn_on_FarmListItem_Delete_Click,
+                                        );
+                                      });
+                                  /*return ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: ClampingScrollPhysics(),
+                                    itemCount: st.obj.length,
+                                    scrollDirection: Axis.vertical,
+                                    itemBuilder: (context, index) {
+                                      return FarmListItem(
+                                        animationController:
+                                            _animationController,
+                                        farmerListItemCallback:
+                                            _fn_on_FarmListItem_Click,
+                                        index: index,
+                                        farmRespJModel: st.obj[index],
+                                        farmListItemDeleteCallback:
+                                            _fn_on_FarmListItem_Delete_Click,
+                                      );
+                                    },
+                                  );*/
+                                } else {
+                                  return invisibleWidget();
+                                }
+                              }),
+                          const SizedBox(
+                            height: 7,
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () {
+                                      print('add vehicle');
+                                      FarmRespJModel farmRespJModel =
+                                          FarmRespJModel();
+                                      farmRespJModel.farmer =
+                                          widget.farmerRespJModel.id;
+                                      _addFarm(
+                                        context,
+                                        farmRespJModel,
+                                      );
+                                    },
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(43.0),
+                                    ),
+                                    splashColor: FarmerAppTheme.lma_blue_1,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: FarmerAppTheme.lma_purple
+                                            .withOpacity(0.8),
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color: FarmerAppTheme.lma_purple_2
+                                                  .withOpacity(0.4),
+                                              offset: Offset(7.0, 7.0),
+                                              blurRadius: 7.0),
+                                        ],
+                                        borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(3.0),
+                                            bottomLeft: Radius.circular(3.0),
+                                            bottomRight: Radius.circular(3.0),
+                                            topRight: Radius.circular(3.0)),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                          top: 3,
+                                          bottom: 3,
+                                          left: 10,
+                                          right: 10,
                                         ),
-                                        errorStyle: TextStyle(
-                                            color: FarmerAppTheme.red,
-                                            fontSize: 12.0,
-                                            fontFamily: FarmerAppTheme
-                                                .font_AvenirLTStd_Light),
-                                        prefixIcon: Icon(
-                                          Icons.edit,
-                                          color: Colors.grey.withOpacity(0.4),
-                                          size: 15.0,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              'Add farm',
+                                              style: TextStyle(
+                                                color: FarmerAppTheme.white,
+                                                fontFamily: FarmerAppTheme
+                                                    .font_AvenirLTStd_Medium,
+                                              ),
+                                            ),
+                                            Icon(
+                                              Icons.add,
+                                              size: 17,
+                                              color: FarmerAppTheme.white,
+                                            )
+                                          ],
                                         ),
                                       ),
-                                      textInputAction: TextInputAction.next,
-                                      onChanged: (String val) {
-                                        _fnameChanged(val);
-                                      },
-                                      controller: _fname_txt_Controller,
-                                      focusNode: _fname_FocusNode,
-                                      autofocus: false,
-                                      onFieldSubmitted: (String val) {
-                                        _fname_FocusNode.unfocus();
-                                      },
-                                    ),
-                                  ),
-                                )),
-                              ]),
-                              StreamBuilder(
-                                stream: _wd_fname_Container_NavigationDataBLoC
-                                    .stream_counter,
-                                builder: (context,
-                                    AsyncSnapshot<NavigationData> snapshot) {
-                                  if (snapshot.hasError) {
-                                    return invisibleWidget();
-                                  }
-                                  switch (snapshot.connectionState) {
-                                    case ConnectionState.none:
-                                      return invisibleWidget();
-                                    case ConnectionState.waiting:
-                                      return invisibleWidget();
-                                    case ConnectionState.active:
-                                      return wd_Text_Widget_Form_Validator_Text(
-                                          snapshot);
-                                    case ConnectionState.done:
-                                      return wd_Text_Widget_Form_Validator_Text(
-                                          snapshot);
-                                  }
-                                },
-                              )
-                            ],
-                          )),*/
-                      BlocBuilder<FarmRespJModelBloc, FarmRespJModelState>(
-                          bloc: farmRespJModelBloc,
-                          builder: (context, st) {
-                            if (st is FarmRespJModelLoaded) {
-                              return ListView.builder(
-                                shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
-                                itemCount: st.obj.length,
-                                scrollDirection: Axis.vertical,
-                                itemBuilder: (context, index) {
-                                  return FarmListItem(
-                                    animationController: _animationController,
-                                    farmerListItemCallback:
-                                        _fn_on_FarmListItem_Click,
-                                    index: index,
-                                    farmRespJModel: st.obj[index],
-                                    farmListItemDeleteCallback:
-                                        _fn_on_FarmListItem_Delete_Click,
-                                  );
-                                },
-                              );
-                            } else {
-                              return invisibleWidget();
-                            }
-                          }),
-                      const SizedBox(
-                        height: 7,
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  print('add vehicle');
-                                  FarmRespJModel farmRespJModel =
-                                      FarmRespJModel();
-                                  farmRespJModel.farmer =
-                                      widget.farmerRespJModel.id;
-                                  _addFarm(
-                                    context,
-                                    farmRespJModel,
-                                  );
-                                },
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(43.0),
-                                ),
-                                splashColor: FarmerAppTheme.lma_blue_1,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: FarmerAppTheme.lma_purple
-                                        .withOpacity(0.8),
-                                    boxShadow: <BoxShadow>[
-                                      BoxShadow(
-                                          color: FarmerAppTheme.lma_purple_2
-                                              .withOpacity(0.4),
-                                          offset: Offset(7.0, 7.0),
-                                          blurRadius: 7.0),
-                                    ],
-                                    borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(3.0),
-                                        bottomLeft: Radius.circular(3.0),
-                                        bottomRight: Radius.circular(3.0),
-                                        topRight: Radius.circular(3.0)),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: 3,
-                                      bottom: 3,
-                                      left: 10,
-                                      right: 10,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          'Add farm',
-                                          style: TextStyle(
-                                            color: FarmerAppTheme.white,
-                                            fontFamily: FarmerAppTheme
-                                                .font_AvenirLTStd_Medium,
-                                          ),
-                                        ),
-                                        Icon(
-                                          Icons.add,
-                                          size: 17,
-                                          color: FarmerAppTheme.white,
-                                        )
-                                      ],
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
                 ));
           }
@@ -497,6 +1213,11 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
   //build widget actions
   //data getters
   _fnameChanged(String txt) {}
+  _lnameChanged(String txt) {}
+  _membernoChanged(String txt) {}
+  _genderChanged(String txt) {}
+  _phoneChanged(String txt) {}
+  _emailChanged(String txt) {}
   //end of data getters
   _fn_on_FarmListItem_Click(
     FarmRespJModel farmerRespJModel,
