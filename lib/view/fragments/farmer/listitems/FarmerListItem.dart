@@ -76,7 +76,7 @@ class _FiberProjectListItemState extends State<FarmerListItem>
                           children: <Widget>[
                             Padding(
                               padding: EdgeInsets.only(
-                                  top: ((widget.index == 0 ? 3 : 24))),
+                                  top: ((widget.index == 0 ? 3 : 10))),
                               child: InkWell(
                                 onTap: () {
                                   widget.farmerListItemCallback!(
