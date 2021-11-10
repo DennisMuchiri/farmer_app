@@ -159,7 +159,7 @@ Future<void> syncAllDataInCompute(Map paramMap) async {
   MoorIsolate moorIsolate = paramMap[FarmerAppStaticParams.moorIsolate];
   DatabaseConnection dbConnection = await moorIsolate.connect();
   AppDatabase database = AppDatabase.connect(dbConnection);
-  Timer.periodic(Duration(minutes: 2), (Timer t) {
+  Timer.periodic(Duration(hours: 1), (Timer t) {
     print(TAG + " timer periodic 2 minutes firing");
     syncAllData_Isolate(
       paramMap,
