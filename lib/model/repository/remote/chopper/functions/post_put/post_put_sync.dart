@@ -74,7 +74,8 @@ void post_put_sync(AppDatabase appDatabase) async {
   }
   //end of Farms
   //prepare json
-  log("preparing to post==" + json.encode(farmerSyncReqJModel.toJson()).toString());
+  log("preparing to post==" +
+      json.encode(farmerSyncReqJModel.toJson()).toString());
   //post
   if (farmerSyncReqJModel != null &&
       ((farmerSyncReqJModel.new_farms != null &&
@@ -160,7 +161,7 @@ Future<void> syncAllDataInCompute(Map paramMap) async {
   DatabaseConnection dbConnection = await moorIsolate.connect();
   AppDatabase database = AppDatabase.connect(dbConnection);
   Timer.periodic(Duration(hours: 1), (Timer t) {
-    print(TAG + " timer periodic 2 minutes firing");
+    print(TAG + " timer periodic 1 hr firing");
     syncAllData_Isolate(
       paramMap,
       database,

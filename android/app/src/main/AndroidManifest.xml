@@ -14,7 +14,7 @@
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"/>
 
    <application
-        android:label="farmer_app"
+        android:label="Farm Manager"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
