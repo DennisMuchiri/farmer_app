@@ -9,6 +9,7 @@ class FarmerAppTheme {
   static Color red_closed = HexColor('#F86C6B');
   static Color white = Colors.white;
   static Color red = Colors.red;
+  static Color green = Colors.green;
   static const Color grey = Color(0xFF3A5160);
   static const Color bg_purple_light = Color(0xFFE6EAF7);
   static const Color lma_purple = Color(0xFF6C66A9);

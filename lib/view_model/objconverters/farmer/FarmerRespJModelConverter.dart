@@ -70,4 +70,26 @@ class FarmerRespJModelConverter implements FarmerRespJModelConverterInterface {
 
     return mrfarmer;
   }
+
+  @override
+  MrfarmersCompanion getEntityCompFromFarmerRespJModelWId(
+      FarmerRespJModel farmRespJModel) {
+    MrfarmersCompanion mrfarmer = MrfarmersCompanion(
+      id: moor.Value(farmRespJModel.id!),
+      onlineid: moor.Value(farmRespJModel.onlineid),
+      first_name: moor.Value(farmRespJModel.first_name),
+      last_name: moor.Value(farmRespJModel.last_name),
+      member_number: moor.Value(farmRespJModel.member_number),
+      gender: moor.Value(farmRespJModel.gender),
+      phone_number: moor.Value(farmRespJModel.phone_number),
+      email: moor.Value(farmRespJModel.email),
+      issettobeupdated: moor.Value(((farmRespJModel.issettobeupdated != null
+          ? farmRespJModel.issettobeupdated!
+          : false))),
+      deleted: moor.Value(
+          ((farmRespJModel.deleted != null ? farmRespJModel.deleted! : false))),
+    );
+
+    return mrfarmer;
+  }
 }

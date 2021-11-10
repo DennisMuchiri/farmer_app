@@ -218,6 +218,7 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
               child: InkWell(
                 onTap: () async {
                   print('Save CLICKED');
+                  _saveData(context);
                 },
                 borderRadius: const BorderRadius.all(
                   Radius.circular(43.0),
@@ -1133,7 +1134,7 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
                                   color: Colors.transparent,
                                   child: InkWell(
                                     onTap: () {
-                                      print('add vehicle');
+                                      print('add farm');
                                       FarmRespJModel farmRespJModel =
                                           FarmRespJModel();
                                       farmRespJModel.farmer =
@@ -1212,12 +1213,177 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
 
   //build widget actions
   //data getters
-  _fnameChanged(String txt) {}
-  _lnameChanged(String txt) {}
-  _membernoChanged(String txt) {}
-  _genderChanged(String txt) {}
-  _phoneChanged(String txt) {}
-  _emailChanged(String txt) {}
+  _fnameChanged(String txt) {
+    widget.farmerRespJModel.first_name = _fname_txt_Controller.text;
+    _validateFirstName();
+  }
+
+  _lnameChanged(String txt) {
+    widget.farmerRespJModel.last_name = _lname_txt_Controller.text;
+    _validateLastName();
+  }
+
+  _membernoChanged(String txt) {
+    widget.farmerRespJModel.member_number = _memberno_txt_Controller.text;
+    _validateMemberNo();
+  }
+
+  _genderChanged(String txt) {
+    widget.farmerRespJModel.gender = _gender_txt_Controller.text;
+    _validateGender();
+  }
+
+  _phoneChanged(String txt) {
+    widget.farmerRespJModel.phone_number = _phone_txt_Controller.text;
+    _validatePhoneNo();
+  }
+
+  _emailChanged(String txt) {
+    widget.farmerRespJModel.email = _email_txt_Controller.text;
+    _validateEmail();
+  }
+
+  //validators
+  bool _validateFirstName() {
+    String? name = widget.farmerRespJModel.first_name;
+
+    if (name != null && isStringValid(name)) {
+      refresh_W_Data_IsValid_NavigationDataBLoC(
+        true,
+        _wd_fname_Container_NavigationDataBLoC,
+        null,
+      );
+      return true;
+    } else {
+      refresh_W_Data_IsValid_NavigationDataBLoC(
+        false,
+        _wd_fname_Container_NavigationDataBLoC,
+        'first name is invalid',
+      );
+      return false;
+    }
+  }
+
+  bool _validateLastName() {
+    String? name = widget.farmerRespJModel.last_name;
+
+    if (name != null && isStringValid(name)) {
+      refresh_W_Data_IsValid_NavigationDataBLoC(
+        true,
+        _wd_lname_Container_NavigationDataBLoC,
+        null,
+      );
+      return true;
+    } else {
+      refresh_W_Data_IsValid_NavigationDataBLoC(
+        false,
+        _wd_lname_Container_NavigationDataBLoC,
+        'last name is invalid',
+      );
+      return false;
+    }
+  }
+
+  bool _validateMemberNo() {
+    String? name = widget.farmerRespJModel.member_number;
+
+    if (name != null && isStringValid(name)) {
+      refresh_W_Data_IsValid_NavigationDataBLoC(
+        true,
+        _wd_memberno_Container_NavigationDataBLoC,
+        null,
+      );
+      return true;
+    } else {
+      refresh_W_Data_IsValid_NavigationDataBLoC(
+        false,
+        _wd_memberno_Container_NavigationDataBLoC,
+        'member no is invalid',
+      );
+      return false;
+    }
+  }
+
+  bool _validateGender() {
+    String? name = widget.farmerRespJModel.gender;
+
+    if (name != null && isStringValid(name)) {
+      refresh_W_Data_IsValid_NavigationDataBLoC(
+        true,
+        _wd_gender_Container_NavigationDataBLoC,
+        null,
+      );
+      return true;
+    } else {
+      refresh_W_Data_IsValid_NavigationDataBLoC(
+        false,
+        _wd_gender_Container_NavigationDataBLoC,
+        'gender is invalid',
+      );
+      return false;
+    }
+  }
+
+  bool _validatePhoneNo() {
+    String? name = widget.farmerRespJModel.phone_number;
+
+    if (name != null && isStringValid(name)) {
+      refresh_W_Data_IsValid_NavigationDataBLoC(
+        true,
+        _wd_phone_Container_NavigationDataBLoC,
+        null,
+      );
+      return true;
+    } else {
+      refresh_W_Data_IsValid_NavigationDataBLoC(
+        false,
+        _wd_phone_Container_NavigationDataBLoC,
+        'phone no is invalid',
+      );
+      return false;
+    }
+  }
+
+  bool _validateEmail() {
+    String? name = widget.farmerRespJModel.email;
+
+    if (name != null && isStringValid(name)) {
+      refresh_W_Data_IsValid_NavigationDataBLoC(
+        true,
+        _wd_email_Container_NavigationDataBLoC,
+        null,
+      );
+      return true;
+    } else {
+      refresh_W_Data_IsValid_NavigationDataBLoC(
+        false,
+        _wd_email_Container_NavigationDataBLoC,
+        'email is invalid',
+      );
+      return false;
+    }
+  }
+
+  Future<bool> isDataValid() async {
+    bool isDataValid = true;
+    bool _is_validateFirstName = _validateFirstName();
+    bool _is_validateLastName = _validateLastName();
+    bool _is_validateMemberNo = _validateMemberNo();
+    bool _is_validateGender = _validateGender();
+    bool _is_validatePhoneNo = _validatePhoneNo();
+    bool _is_validateEmail = _validateEmail();
+
+    isDataValid = _is_validateFirstName &&
+        _is_validateLastName &&
+        _is_validateMemberNo &&
+        _is_validateGender &&
+        _is_validatePhoneNo &&
+        _is_validateEmail;
+    ;
+    return isDataValid;
+  }
+  //end of validators
+
   //end of data getters
   _fn_on_FarmListItem_Click(
     FarmRespJModel farmerRespJModel,
@@ -1266,6 +1432,51 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
       }
     } else {
       print("!saved_FarmRespJModel");
+    }
+  }
+
+  _saveData(BuildContext context) async {
+    _email_FocusNode.unfocus();
+    String TAG = 'saveData';
+    if (await isDataValid()) {
+      //SAVE Farm For User
+      FarmerListVM _farmerListVM = FarmerListVM();
+
+      if (widget.farmerRespJModel.id != null) {
+        //update
+        bool is_updated = await _farmerListVM.updateFarmerlocal(
+            widget.farmerRespJModel, context);
+        if (is_updated != null && is_updated) {
+          showSnackbarWBgCol(
+            'Farmer details updated',
+            snackbarBuildContext!,
+            FarmerAppTheme.green,
+          );
+        } else {
+          showSnackbarWBgCol(
+            'Saving failed',
+            snackbarBuildContext!,
+            FarmerAppTheme.red,
+          );
+        }
+      } else {
+        int genid = await _farmerListVM.insertFarmerlocal(
+            widget.farmerRespJModel, context);
+        if (genid != null) {
+          showSnackbarWBgCol(
+            'Farmer details saved',
+            snackbarBuildContext!,
+            FarmerAppTheme.green,
+          );
+          widget.farmerRespJModel.id = genid;
+        } else {
+          showSnackbarWBgCol(
+            'Saving failed',
+            snackbarBuildContext!,
+            FarmerAppTheme.red,
+          );
+        }
+      }
     }
   }
 }

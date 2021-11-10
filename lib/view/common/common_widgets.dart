@@ -1,5 +1,6 @@
 import 'package:farmer_app/model/model/custom/NavigationData.dart';
 import 'package:farmer_app/utils/themes/farmer_app_theme.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 Widget wd_Text_Widget_Form_Validator_Text(
@@ -39,4 +40,30 @@ Widget invisibleWidget() {
       width: 0,
     ),
   );
+}
+
+void showSnackbarWBgCol(
+  String message,
+  BuildContext context,
+  Color bgcolor,
+) {
+  if (context != null) {
+    SnackBar snackBar = SnackBar(
+      behavior: SnackBarBehavior.floating,
+      content: Text(
+        message,
+        style: TextStyle(
+          fontFamily: FarmerAppTheme.font_AvenirLTStd_Medium,
+          fontWeight: FontWeight.w500,
+          fontSize: 14,
+          letterSpacing: 0.0,
+          color: FarmerAppTheme.white,
+        ),
+      ),
+      action: SnackBarAction(
+          label: 'OK', textColor: FarmerAppTheme.white, onPressed: () {}),
+      backgroundColor: bgcolor,
+    );
+    Scaffold.of(context).showSnackBar(snackBar);
+  }
 }
