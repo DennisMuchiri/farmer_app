@@ -1052,24 +1052,34 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
                                   )
                                 ],
                               )),
-                          SizedBox(
+                          const SizedBox(
                             height: 7,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 24, right: 24, top: 5, bottom: 0),
-                            child: Text(
-                              'Farms',
-                              style: TextStyle(
-                                fontFamily:
-                                    FarmerAppTheme.font_AvenirLTStd_Medium,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                                letterSpacing: 0.0,
-                                color: FarmerAppTheme.lma_purple_2,
-                              ),
-                            ),
-                          ),
+                          BlocBuilder<FarmRespJModelBloc, FarmRespJModelState>(
+                              bloc: farmRespJModelBloc,
+                              builder: (context, st) {
+                                if (st != null &&
+                                    st is FarmRespJModelLoaded &&
+                                    st.obj.length > 0) {
+                                  return const Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 24, right: 24, top: 5, bottom: 0),
+                                    child: Text(
+                                      'Farms',
+                                      style: TextStyle(
+                                        fontFamily: FarmerAppTheme
+                                            .font_AvenirLTStd_Medium,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 14,
+                                        letterSpacing: 0.0,
+                                        color: FarmerAppTheme.lma_purple_2,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  return invisibleWidget();
+                                }
+                              }),
                           BlocBuilder<FarmRespJModelBloc, FarmRespJModelState>(
                               bloc: farmRespJModelBloc,
                               builder: (context, st) {
