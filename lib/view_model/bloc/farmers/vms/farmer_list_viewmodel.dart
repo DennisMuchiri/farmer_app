@@ -57,4 +57,18 @@ class FarmerListVM {
       farmerRespJModelBloc?.add(ObjChanged(_farmerRespJModelList));
     }
   }
+
+  Future<bool> updateFarmerlocal(
+      FarmerRespJModel farmerRespJModel, BuildContext buildContext) async {
+    bool issaved =
+        await farmer_dao_updateFarmerlocal(farmerRespJModel, buildContext);
+    return issaved;
+  }
+
+  Future<int> insertFarmerlocal(
+      FarmerRespJModel farmerRespJModel, BuildContext buildContext) async {
+    int issavedid =
+        await farmer_dao_insertFarmerlocal(farmerRespJModel, buildContext);
+    return issavedid;
+  }
 }

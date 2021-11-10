@@ -1,6 +1,8 @@
 import 'package:farmer_app/injection/injection.dart';
 import 'package:farmer_app/model/entities/moor/setup/AppDatabase.dart';
+import 'package:farmer_app/model/model/jsonserializable/api/from/farmer/FarmerRespJModel.dart';
 import 'package:farmer_app/view_model/objconverters/farm/FarmRespJModelConverterInterface.dart';
+import 'package:farmer_app/view_model/objconverters/farmer/FarmerRespJModelConverterInterface.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:json_store/json_store.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -112,3 +114,4 @@ Future<bool> frm_dao_deleteFarmlocal(
       .softdeleteMrfarmsCompanion(farmid);
   return isdeleted;
 }
+

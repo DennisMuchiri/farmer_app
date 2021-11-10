@@ -158,6 +158,35 @@ class MrfarmerDao extends DatabaseAccessor<AppDatabase>
     });
   }
 
+  Future<bool> updateMrfarmerById(MrfarmersCompanion cin) async {
+    int? id = cin.id.value;
+    Mrfarmer? mf;
+    if (id != null) {
+      mf = await getMrfarmerById(id);
+    }
+
+    if (mf != null) {
+      mf = mf.copyWith(
+        first_name:
+        ((cin.first_name != null ? cin.first_name.value : null)),
+        last_name: ((cin.last_name != null ? cin.last_name.value : null)),
+        member_number:
+        ((cin.member_number != null ? cin.member_number.value : null)),
+        gender: ((cin.gender != null ? cin.gender.value : null)),
+        phone_number:
+        ((cin.phone_number != null ? cin.phone_number.value : null)),
+        email: ((cin.email != null ? cin.email.value : null)),
+        issettobeupdated: true,
+        deleted: ((cin.deleted != null ? cin.deleted.value : false)),
+      );
+    }
+
+    if (mf != null) {
+      await update(mrfarmers).replace(mf);
+    }
+    return true;
+  }
+
   Future deleteAllMrfarmersFuture(List<Mrfarmer> onlineuserList) async {
     await batch((b) {
       for (Mrfarmer smc in onlineuserList) {
