@@ -3,6 +3,7 @@ import 'package:farmer_app/model/model/jsonserializable/api/from/farmer/FarmerRe
 import 'package:farmer_app/model/repository/local/db/farmers/FarmDao.dart';
 import 'package:farmer_app/view_model/bloc/farms/bloc/farm_respjmodel_bloc.dart';
 import 'package:farmer_app/view_model/bloc/farms/bloc/farm_respjmodel_bloc_event.dart';
+import 'package:flutter/widgets.dart';
 
 class FarmListVM {
   FarmListVM({
@@ -22,6 +23,18 @@ class FarmListVM {
   Future<List<FarmRespJModel>?> fetchFarmsFromFarmer(int farmerid) async {
     List<FarmRespJModel>? _farmRespJModelList =
         await load_Farms_For_FarmerRespJModel(farmerid);
+
+    if (_farmRespJModelList != null) {
+      farmRespJModelBloc?.add(FarmObjChanged(_farmRespJModelList));
+    }
+  }
+
+  Future<List<FarmRespJModel>?> fetchFarmsFromFarmerlocal(
+    int farmerid,
+    BuildContext buildContext,
+  ) async {
+    List<FarmRespJModel>? _farmRespJModelList =
+        await load_Farms_For_FarmerRespJModel_local(farmerid, buildContext);
 
     if (_farmRespJModelList != null) {
       farmRespJModelBloc?.add(FarmObjChanged(_farmRespJModelList));

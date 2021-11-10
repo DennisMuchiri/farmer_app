@@ -83,16 +83,16 @@ class MrfarmDao extends DatabaseAccessor<AppDatabase> with _$MrfarmDaoMixin {
     });
   }
 
-  Future upsertAllMrfarmsCompanion(
+  Future<bool> upsertAllMrfarmsCompanion(
       List<MrfarmsCompanion> onlineuserCompanionList) async {
-    List<MrfarmsCompanion> upd = [];
+    List<Mrfarm> upd = [];
     List<MrfarmsCompanion> ins = [];
 
     for (MrfarmsCompanion cin in onlineuserCompanionList) {
       int? onlidval = cin.onlineid.value;
       Mrfarm? mf;
       if (onlidval != null) {
-        mf = await getMrfarmById(onlidval);
+        mf = await getMrfarmByOnlineId(onlidval);
       }
 
       if (cin.farmer_online_id.value != null) {
@@ -100,44 +100,82 @@ class MrfarmDao extends DatabaseAccessor<AppDatabase> with _$MrfarmDaoMixin {
         Mrfarmer? mrfarmer =
             await db.mrfarmerDao.getMrfarmerByOnlineId(farmeronlineid);
         if (mrfarmer != null) {
-          cin.copyWith(
+          cin = cin.copyWith(
             farmer: Value(mrfarmer.id),
           );
         }
       }
 
       if (mf != null) {
-        upd.add(cin);
+        if (mf.issettobeupdated == null ||
+            (mf.issettobeupdated != null && !mf.issettobeupdated)) {
+          mf.copyWith(
+            farm_name: ((cin.farm_name != null ? cin.farm_name.value : null)),
+            farm_size: ((cin.farm_size != null ? cin.farm_size.value : null)),
+            farmer: ((cin.farmer != null ? cin.farmer.value : null)),
+            farmer_online_id: ((cin.farmer_online_id != null
+                ? cin.farmer_online_id.value
+                : null)),
+            issettobeupdated: ((cin.issettobeupdated != null
+                ? cin.issettobeupdated.value
+                : false)),
+            deleted: ((cin.deleted != null ? cin.deleted.value : false)),
+          );
+          upd.add(mf);
+        }
       } else {
         ins.add(cin);
       }
     }
 
+    await updateAllMrfarms(upd);
     await batch((b) {
-      for (MrfarmsCompanion smc in onlineuserCompanionList) {
-        updateMrfarmsCompanion(smc);
-      }
+      b.insertAll(mrfarms, ins);
     });
+    return true;
   }
 
   Future updateAllMrfarmsCompanion(
       List<MrfarmsCompanion> onlineuserCompanionList) async {
-    await batch((b) {
+    return await batch((b) async {
       for (MrfarmsCompanion smc in onlineuserCompanionList) {
-        updateMrfarmsCompanion(smc);
+        await updateMrfarmsCompanion(smc);
       }
     });
   }
 
-  Future<bool> updateMrfarmsCompanion(Insertable<Mrfarm> company) =>
-      update(mrfarms).replace(company);
+  Future<bool> updateAllMrfarms(List<Mrfarm> onlineuserCompanionList) async {
+    for (Mrfarm smc in onlineuserCompanionList) {
+      update(mrfarms).replace(smc);
+    }
+    return true;
+  }
+
+  Future<bool> updateMrfarmsCompanion(Insertable<Mrfarm> mfarm) {
+    return update(mrfarms).replace(mfarm);
+  }
 
   Future<List<Mrfarm>> getMrfarmsByName(String name) {
     String TAG = 'getMrfarmsByName:';
     return (select(mrfarms)
           ..where((t) =>
               t.farm_name.like('%' + name + '%') |
-              t.farm_name.like('%' + name + '%')))
+              t.farm_size.like('%' + name + '%')))
+        .get()
+        .then((List<Mrfarm> reslist) {
+      if (reslist.length > 0) {
+        return reslist;
+      } else {
+        return [];
+      }
+    }, onError: (error) {
+      return [];
+    });
+  }
+
+  Future<List<Mrfarm>> getMrfarmsByFarmerId(int farmerid) {
+    String TAG = 'getMrfarmsByFarmerId:';
+    return (select(mrfarms)..where((t) => t.farmer.equals(farmerid)))
         .get()
         .then((List<Mrfarm> reslist) {
       if (reslist.length > 0) {

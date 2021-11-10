@@ -53,7 +53,7 @@ class FarmerRespJModelConverter implements FarmerRespJModelConverterInterface {
   MrfarmersCompanion getEntityCompFromFarmerRespJModel(
       FarmerRespJModel farmRespJModel) {
     MrfarmersCompanion mrfarmer = MrfarmersCompanion(
-      id: moor.Value(farmRespJModel.id!),
+      //id: moor.Value(farmRespJModel.id!),
       onlineid: moor.Value(farmRespJModel.onlineid),
       first_name: moor.Value(farmRespJModel.first_name),
       last_name: moor.Value(farmRespJModel.last_name),

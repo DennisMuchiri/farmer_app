@@ -70,9 +70,9 @@ class MrfarmerDao extends DatabaseAccessor<AppDatabase>
     });
   }
 
-  Future upsertAllMrfarmersByOnlineIdCompanion(
+  Future<bool> upsertAllMrfarmersByOnlineIdCompanion(
       List<MrfarmersCompanion> mrfarmersCompanionList) async {
-    List<MrfarmersCompanion> upd = [];
+    List<Mrfarmer> upd = [];
     List<MrfarmersCompanion> ins = [];
 
     for (MrfarmersCompanion cin in mrfarmersCompanionList) {
@@ -81,28 +81,57 @@ class MrfarmerDao extends DatabaseAccessor<AppDatabase>
       if (onlidval != null) {
         mf = await getMrfarmerById(onlidval);
       }
+
       if (mf != null) {
-        upd.add(cin);
+        if (mf.issettobeupdated == null ||
+            (mf.issettobeupdated != null && !mf.issettobeupdated)) {
+          mf.copyWith(
+            first_name:
+                ((cin.first_name != null ? cin.first_name.value : null)),
+            last_name: ((cin.last_name != null ? cin.last_name.value : null)),
+            member_number:
+                ((cin.member_number != null ? cin.member_number.value : null)),
+            gender: ((cin.gender != null ? cin.gender.value : null)),
+            phone_number:
+                ((cin.phone_number != null ? cin.phone_number.value : null)),
+            email: ((cin.email != null ? cin.email.value : null)),
+            issettobeupdated: ((cin.issettobeupdated != null
+                ? cin.issettobeupdated.value
+                : false)),
+            deleted: ((cin.deleted != null ? cin.deleted.value : false)),
+          );
+          upd.add(mf);
+        }
       } else {
         ins.add(cin);
       }
     }
-    print(TAG + " upd=" + '${upd.length}');
-    await updateAllMrfarmersCompanion(upd);
-    print(TAG + " ins=" + '${ins.length}');
+    await updateAllMrfarmers(upd);
     await batch((b) {
       b.insertAll(mrfarmers, ins);
     });
     return true;
   }
 
-  Future updateAllMrfarmersCompanion(
+  Future<bool> updateAllMrfarmersCompanion(
       List<MrfarmersCompanion> onlineuserCompanionList) async {
-    return await batch((b) async {
-      for (MrfarmersCompanion smc in onlineuserCompanionList) {
-        await updateMrfarmersCompanion(smc);
-      }
-    });
+    //return await batch((b) async {
+    for (MrfarmersCompanion smc in onlineuserCompanionList) {
+      //await updateMrfarmersCompanion(smc);
+      update(mrfarmers).replace(smc);
+    }
+    return true;
+    /*});*/
+  }
+
+  Future<bool> updateAllMrfarmers(
+      List<Mrfarmer> onlineuserCompanionList) async {
+    for (Mrfarmer smc in onlineuserCompanionList) {
+      //await updateMrfarmersCompanion(smc);
+      await update(mrfarmers).replace(smc);
+    }
+    return true;
+    /*});*/
   }
 
   Future<bool> updateMrfarmersCompanion(Insertable<Mrfarmer> company) {

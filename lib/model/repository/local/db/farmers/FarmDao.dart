@@ -1,6 +1,12 @@
+import 'package:farmer_app/injection/injection.dart';
+import 'package:farmer_app/model/entities/moor/setup/AppDatabase.dart';
+import 'package:farmer_app/view_model/objconverters/farm/FarmRespJModelConverterInterface.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:json_store/json_store.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:farmer_app/model/model/jsonserializable/api/from/farmer/FarmRespJModel.dart';
+import 'package:sqflite/sqlite_api.dart';
+import 'package:provider/provider.dart';
 
 String farmdb = "farmdb";
 Future<void> insert_FarmRespJModel(FarmRespJModel farm) async {
@@ -13,7 +19,6 @@ Future<void> insert_FarmRespJModel(FarmRespJModel farm) async {
 
 Future<void> insertBatch_FarmRespJModel(
     List<FarmRespJModel> farmerRespJModelList) async {
-
   Batch batch = await JsonStore().startBatch();
   await Future.forEach(farmerRespJModelList, (FarmRespJModel farm) async {
     //await JsonStore().deleteItem('$farmdb-${farm.id}${farm.farm_name}${farm.farm_size}');
@@ -56,4 +61,16 @@ Future<List<FarmRespJModel>> load_Farms_For_FarmerRespJModel(int id) async {
   print("_filteredfarms ${_filteredfarms.length}");
 
   return _filteredfarms;
+}
+
+Future<List<FarmRespJModel>> load_Farms_For_FarmerRespJModel_local(
+  int farmerid,
+  BuildContext buildContext,
+) async {
+  List<Mrfarm> farmlist =
+      await Provider.of<AppDatabase>(buildContext, listen: false)
+          .mrfarmDao
+          .getMrfarmsByFarmerId(farmerid);
+  return getIt<FarmRespJModelConverterInterface>()
+      .getFarmRespJModelListFromEntities(farmlist);
 }

@@ -38,6 +38,10 @@ Future<List<FarmerRespJModel>?> req_fetch_farmers(
       var respBody = serviceresponse.body;
       List<FarmerRespJModel> farmerRespJModelList =
           (respBody as List).map((i) => FarmerRespJModel.fromJson(i)).toList();
+      for (FarmerRespJModel farmer in farmerRespJModelList) {
+        farmer.onlineid = farmer.id;
+        farmer.id = null;
+      }
 
       if (savelocally) {
         //await insertBatch_FarmerRespJModel(farmerRespJModelList);
@@ -51,18 +55,38 @@ Future<List<FarmerRespJModel>?> req_fetch_farmers(
                 .getEntitiesCompFromFarmerRespJModelList(farmerRespJModelList);
         print(TAG + " frmerlist==");
         print(TAG + " frmerlist=" + '${frmerlist.length}');
-        await mrfarmerDao.upsertAllMrfarmersByOnlineIdCompanion(frmerlist);
-
+        bool bl_fups =
+            await mrfarmerDao.upsertAllMrfarmersByOnlineIdCompanion(frmerlist);
+        print(TAG + " frmerlist upserted==");
         //upsert farms
         List<FarmRespJModel> farmRespJModelList = [];
         for (FarmerRespJModel farmer in farmerRespJModelList) {
+          print(TAG + " farmer.farms1==");
           if (farmer.farms != null) {
-            farmRespJModelList.addAll(farmer.farms as Iterable<FarmRespJModel>);
+            List<FarmRespJModel> frmfrms = farmer.farms!;
+            print(TAG + " farmer.farms2==");
+            for (FarmRespJModel frm in frmfrms) {
+              print(TAG + " farmer.farms3==");
+
+              frm.onlineid = frm.id;
+              frm.id = null;
+              frm.farmer_online_id = farmer.onlineid;
+              print(TAG + " farmer.farms3 farmer.onlineid==${farmer.onlineid}");
+            }
+            farmRespJModelList.addAll(frmfrms);
           }
         }
+        print(TAG + " mrfarmDao==");
+        print(TAG + "farmRespJModelList len ${farmRespJModelList.length}");
         MrfarmDao mrfarmDao =
             Provider.of<AppDatabase>(buildContext, listen: false).mrfarmDao;
-        //mrfarmDao.updateAllMrfarmsCompanion(onlineuserCompanionList)
+        print(TAG + " frmclist 1");
+        List<MrfarmsCompanion> frmclist =
+            getIt<FarmRespJModelConverterInterface>()
+                .getEntitiesCompFromFarmRespJModelList(farmRespJModelList);
+        print(TAG + " frmclist==");
+        print(TAG + " frmclist=" + '${frmclist.length}');
+        bool isupsfrm = await mrfarmDao.upsertAllMrfarmsCompanion(frmclist);
         //end of upsert farms
       }
       return farmerRespJModelList;

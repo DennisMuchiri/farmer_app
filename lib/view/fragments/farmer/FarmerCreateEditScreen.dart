@@ -121,7 +121,8 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
   _setUpData(BuildContext context) async {
     //load data
     if (widget.farmerRespJModel.id != null) {
-      _farmListVM?.fetchFarmsFromFarmer(widget.farmerRespJModel.id!);
+      _farmListVM?.fetchFarmsFromFarmerlocal(
+          widget.farmerRespJModel.id!, context);
     }
     //end of load data
   }
@@ -405,7 +406,8 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
       print("saved_FarmRespJModel");
       if (widget.farmerRespJModel.id != null) {
         print("widget.farmerRespJModel.id != null");
-        _farmListVM?.fetchFarmsFromFarmer(widget.farmerRespJModel.id!);
+        _farmListVM?.fetchFarmsFromFarmerlocal(
+            widget.farmerRespJModel.id!, context);
       }
     } else {
       print("!saved_FarmRespJModel");
