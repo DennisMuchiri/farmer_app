@@ -272,7 +272,7 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
                           color: FarmerAppTheme.lma_purple_2,
                         ),
                       ),
-                     /* Padding(
+                      /* Padding(
                         padding: const EdgeInsets.only(
                             left: 4, right: 16, top: 8, bottom: 3),
                         child: Text(
@@ -398,6 +398,8 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
                                         _fn_on_FarmListItem_Click,
                                     index: index,
                                     farmRespJModel: st.obj[index],
+                                    farmListItemDeleteCallback:
+                                        _fn_on_FarmListItem_Delete_Click,
                                   );
                                 },
                               );
@@ -505,6 +507,16 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
       context,
       farmerRespJModel,
     );
+  }
+
+  _fn_on_FarmListItem_Delete_Click(
+    FarmRespJModel farmerRespJModel,
+    int? index,
+  ) async {
+    //delete  farm
+    await _farmListVM?.deleteFarmlocal(farmerRespJModel.id!, context);
+    _farmListVM?.fetchFarmsFromFarmerlocal(
+        widget.farmerRespJModel.id!, context);
   }
 
   _addFarm(

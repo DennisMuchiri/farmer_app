@@ -5,14 +5,17 @@ import 'package:farmer_app/utils/functions/validators.dart';
 import 'package:farmer_app/utils/statics/farmer_app_static_params.dart';
 import 'package:farmer_app/utils/themes/farmer_app_theme.dart';
 import 'package:farmer_app/view/common/common_widgets.dart';
+import 'package:farmer_app/view_model/bloc/farmers/vms/farm_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:after_layout/after_layout.dart';
 
 class FarmListItem extends StatefulWidget {
   AnimationController? animationController;
   FarmListItemCallback? farmerListItemCallback;
+  FarmListItemCallback? farmListItemDeleteCallback;
   FarmRespJModel farmRespJModel;
   int? index;
+
 
   FarmListItem({
     Key? key,
@@ -20,6 +23,8 @@ class FarmListItem extends StatefulWidget {
     this.farmerListItemCallback,
     required this.farmRespJModel,
     this.index,
+    this.farmListItemDeleteCallback,
+
   }) : super(key: key);
 
   @override
@@ -196,6 +201,10 @@ class _FiberProjectListItemState extends State<FarmListItem>
                           child: InkWell(
                             onTap: () async {
                               print('delete CLICKED');
+                              widget.farmListItemDeleteCallback!(
+                                widget.farmRespJModel,
+                                widget.index,
+                              );
                             },
                             borderRadius: const BorderRadius.all(
                               Radius.circular(43.0),

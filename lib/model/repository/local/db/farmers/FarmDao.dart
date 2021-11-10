@@ -100,3 +100,15 @@ Future<int> frm_dao_insertFarmlocal(
       .insertMrfarmsCompanion(farmlisfarmtcomp);
   return insertedid;
 }
+
+
+Future<bool> frm_dao_deleteFarmlocal(
+    int farmid,
+    BuildContext buildContext,
+    ) async {
+
+  bool isdeleted = await Provider.of<AppDatabase>(buildContext, listen: false)
+      .mrfarmDao
+      .softdeleteMrfarmsCompanion(farmid);
+  return isdeleted;
+}

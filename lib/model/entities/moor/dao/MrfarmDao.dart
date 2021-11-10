@@ -182,6 +182,20 @@ class MrfarmDao extends DatabaseAccessor<AppDatabase> with _$MrfarmDaoMixin {
     return update(mrfarms).replace(mfarm);
   }
 
+  Future<bool> softdeleteMrfarmsCompanion(int mfarmid) async {
+    Mrfarm? mf;
+    if (mfarmid != null) {
+      mf = await getMrfarmById(mfarmid);
+    }
+
+    if (mf != null) {
+      mf = mf.copyWith(deleted: true);
+      await update(mrfarms).replace(mf);
+    }
+
+    return true;
+  }
+
   Future<List<Mrfarm>> getMrfarmsByName(String name) {
     String TAG = 'getMrfarmsByName:';
     return (select(mrfarms)
@@ -202,7 +216,11 @@ class MrfarmDao extends DatabaseAccessor<AppDatabase> with _$MrfarmDaoMixin {
 
   Future<List<Mrfarm>> getMrfarmsByFarmerId(int farmerid) {
     String TAG = 'getMrfarmsByFarmerId:';
-    return (select(mrfarms)..where((t) => t.farmer.equals(farmerid)))
+    //and is not deleted
+    return (select(mrfarms)
+          ..where((t) =>
+              t.farmer.equals(farmerid) &
+              (t.deleted.equals(null) | t.deleted.equals(false))))
         .get()
         .then((List<Mrfarm> reslist) {
       if (reslist.length > 0) {
