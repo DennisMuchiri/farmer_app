@@ -681,6 +681,7 @@ class _AddFarmDialogState extends State<AddFarmDialog>
 
   _nameChanged() {
     widget.farm.farm_name = _name_txt_Controller.text;
+    print("_name_txt_Controller.text${_name_txt_Controller.text}");
     _validate_Name();
   }
 
@@ -746,8 +747,12 @@ class _AddFarmDialogState extends State<AddFarmDialog>
     if (await isDataValid()) {
       //SAVE Farm For User
       FarmListVM _farmListVM = FarmListVM();
-      await _farmListVM.saveFarm(widget.farm);
-      //_dismissSelf
+      if (widget.farm.id != null) {
+        //update
+        await _farmListVM.updateFarmlocal(widget.farm, context);
+      } else {
+        await _farmListVM.insertFarmlocal(widget.farm, context);
+      }
       _dismissSelf(widget.farm);
     }
   }

@@ -9,6 +9,8 @@ abstract class FarmRespJModelConverterInterface {
 
   MrfarmsCompanion getEntityCompFromFarmRespJModel(FarmRespJModel farmRespJModel);
 
+  MrfarmsCompanion getEntityCompFromFarmRespJModelWId(FarmRespJModel farmRespJModel);
+
   List<MrfarmsCompanion> getEntitiesCompFromFarmRespJModelList(
       List<FarmRespJModel> farmRespJModelList);
 

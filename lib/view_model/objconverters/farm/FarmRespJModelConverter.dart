@@ -12,7 +12,8 @@ class FarmRespJModelConverter implements FarmRespJModelConverterInterface {
       List<FarmRespJModel> farmRespJModelList) {
     List<MrfarmsCompanion> compList = [];
     for (FarmRespJModel fresp in farmRespJModelList) {
-      print("FarmRespJModelConverter farmer.farms3== ${fresp.farmer_online_id}");
+      print(
+          "FarmRespJModelConverter farmer.farms3== ${fresp.farmer_online_id}");
       MrfarmsCompanion mfr = getEntityCompFromFarmRespJModel(fresp);
       compList.add(mfr);
     }
@@ -63,5 +64,24 @@ class FarmRespJModelConverter implements FarmRespJModelConverterInterface {
     }
 
     return frmresplist;
+  }
+
+  @override
+  MrfarmsCompanion getEntityCompFromFarmRespJModelWId(
+      FarmRespJModel farmRespJModel) {
+    MrfarmsCompanion mrfarmsCompanion = MrfarmsCompanion(
+      id: moor.Value(farmRespJModel.id!),
+      onlineid: moor.Value(farmRespJModel.onlineid),
+      farm_name: moor.Value(farmRespJModel.farm_name),
+      farm_size: moor.Value(farmRespJModel.farm_size),
+      farmer: moor.Value(farmRespJModel.farmer),
+      farmer_online_id: moor.Value(farmRespJModel.farmer_online_id),
+      issettobeupdated: moor.Value(((farmRespJModel.issettobeupdated != null
+          ? farmRespJModel.issettobeupdated!
+          : false))),
+      deleted: moor.Value(
+          ((farmRespJModel.deleted != null ? farmRespJModel.deleted! : false))),
+    );
+    return mrfarmsCompanion;
   }
 }

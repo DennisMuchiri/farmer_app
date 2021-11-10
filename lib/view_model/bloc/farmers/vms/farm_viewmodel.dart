@@ -44,4 +44,18 @@ class FarmListVM {
   Future<void> saveFarm(FarmRespJModel farmRespJModel) async {
     return await insert_FarmRespJModel(farmRespJModel);
   }
+
+
+
+  Future<bool> updateFarmlocal(
+      FarmRespJModel farmRespJModel, BuildContext buildContext) async {
+    bool issaved = await frm_dao_updateFarmlocal(farmRespJModel, buildContext);
+    return issaved;
+  }
+
+  Future<int> insertFarmlocal(
+      FarmRespJModel farmRespJModel, BuildContext buildContext) async {
+    int issavedid = await frm_dao_insertFarmlocal(farmRespJModel, buildContext);
+    return issavedid;
+  }
 }

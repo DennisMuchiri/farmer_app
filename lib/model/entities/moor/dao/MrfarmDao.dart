@@ -135,6 +135,33 @@ class MrfarmDao extends DatabaseAccessor<AppDatabase> with _$MrfarmDaoMixin {
     return true;
   }
 
+  Future<bool> updateMrfarmById(MrfarmsCompanion cin) async {
+    int? id = cin.id.value;
+    Mrfarm? mf;
+    if (id != null) {
+      mf = await getMrfarmById(id);
+    }
+    print("farm_name==");
+
+    if (mf != null) {
+      mf = mf.copyWith(
+        farm_name: ((cin.farm_name != null ? cin.farm_name.value : null)),
+        farm_size: ((cin.farm_size != null ? cin.farm_size.value : null)),
+        farmer: ((cin.farmer != null ? cin.farmer.value : null)),
+        farmer_online_id: ((cin.farmer_online_id != null
+            ? cin.farmer_online_id.value
+            : null)),
+        issettobeupdated: true,
+        deleted: ((cin.deleted != null ? cin.deleted.value : false)),
+      );
+    }
+
+    if (mf != null) {
+      await update(mrfarms).replace(mf);
+    }
+    return true;
+  }
+
   Future updateAllMrfarmsCompanion(
       List<MrfarmsCompanion> onlineuserCompanionList) async {
     return await batch((b) async {

@@ -74,3 +74,29 @@ Future<List<FarmRespJModel>> load_Farms_For_FarmerRespJModel_local(
   return getIt<FarmRespJModelConverterInterface>()
       .getFarmRespJModelListFromEntities(farmlist);
 }
+
+Future<bool> frm_dao_updateFarmlocal(
+  FarmRespJModel farmRespJModel,
+  BuildContext buildContext,
+) async {
+  MrfarmsCompanion farmlisfarmtcomp = getIt<FarmRespJModelConverterInterface>()
+      .getEntityCompFromFarmRespJModelWId(farmRespJModel);
+
+  bool upserted = await Provider.of<AppDatabase>(buildContext, listen: false)
+      .mrfarmDao
+      .updateMrfarmById(farmlisfarmtcomp);
+  return upserted;
+}
+
+Future<int> frm_dao_insertFarmlocal(
+  FarmRespJModel farmRespJModel,
+  BuildContext buildContext,
+) async {
+  MrfarmsCompanion farmlisfarmtcomp = getIt<FarmRespJModelConverterInterface>()
+      .getEntityCompFromFarmRespJModel(farmRespJModel);
+
+  int insertedid = await Provider.of<AppDatabase>(buildContext, listen: false)
+      .mrfarmDao
+      .insertMrfarmsCompanion(farmlisfarmtcomp);
+  return insertedid;
+}
