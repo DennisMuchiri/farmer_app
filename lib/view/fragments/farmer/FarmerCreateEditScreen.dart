@@ -293,13 +293,19 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
-                            width: MediaQuery.of(context).size.width / 5,
                             child: Material(
                               color: Colors.transparent,
                               child: InkWell(
                                 onTap: () {
                                   print('add vehicle');
-                                  _addFarm(context);
+                                  FarmRespJModel farmRespJModel =
+                                      FarmRespJModel();
+                                  farmRespJModel.farmer =
+                                      widget.farmerRespJModel.id;
+                                  _addFarm(
+                                    context,
+                                    farmRespJModel,
+                                  );
                                 },
                                 borderRadius: const BorderRadius.all(
                                   Radius.circular(43.0),
@@ -324,7 +330,11 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.only(
-                                        top: 3, bottom: 3),
+                                      top: 3,
+                                      bottom: 3,
+                                      left: 10,
+                                      right: 10,
+                                    ),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
@@ -366,11 +376,18 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
   _fn_on_FarmListItem_Click(
     FarmRespJModel farmerRespJModel,
     int? index,
-  ) {}
+  ) {
+    //edit existing farm
+    _addFarm(
+      context,
+      farmerRespJModel,
+    );
+  }
 
-  _addFarm(BuildContext context) async {
-    FarmRespJModel farmRespJModel = FarmRespJModel();
-    farmRespJModel.farmer = widget.farmerRespJModel.id;
+  _addFarm(
+    BuildContext context,
+    FarmRespJModel farmRespJModel,
+  ) async {
     FarmRespJModel? saved_FarmRespJModel = await showGeneralDialog(
         barrierDismissible: true,
         barrierLabel:
@@ -390,7 +407,7 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
         print("widget.farmerRespJModel.id != null");
         _farmListVM?.fetchFarmsFromFarmer(widget.farmerRespJModel.id!);
       }
-    }else{
+    } else {
       print("!saved_FarmRespJModel");
     }
   }

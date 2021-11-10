@@ -71,7 +71,15 @@ class _AddFarmDialogState extends State<AddFarmDialog>
     _setUpData(context);
   }
 
-  _setUpData(BuildContext context) async {}
+  _setUpData(BuildContext context) async {
+    if (isStringValid(widget.farm.farm_name)) {
+      _name_txt_Controller.text = widget.farm.farm_name!;
+    }
+
+    if (isStringValid(widget.farm.farm_size)) {
+      _size_txt_Controller.text = widget.farm.farm_size!;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

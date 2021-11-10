@@ -1,9 +1,15 @@
+import 'package:farmer_app/injection/injection.dart';
+import 'package:farmer_app/model/entities/moor/setup/AppDatabase.dart';
 import 'package:farmer_app/model/model/jsonserializable/api/from/farmer/FarmRespJModel.dart';
 import 'package:farmer_app/model/model/jsonserializable/api/from/farmer/FarmerRespJModel.dart';
 import 'package:farmer_app/model/repository/local/db/farmers/FarmDao.dart';
+import 'package:farmer_app/view_model/objconverters/farm/FarmRespJModelConverterInterface.dart';
+import 'package:farmer_app/view_model/objconverters/farmer/FarmerRespJModelConverter.dart';
+import 'package:farmer_app/view_model/objconverters/farmer/FarmerRespJModelConverterInterface.dart';
 import 'package:flutter/material.dart';
 import 'package:json_store/json_store.dart';
 import 'package:sqflite/sqlite_api.dart';
+import 'package:provider/provider.dart';
 
 String farmer = "farmer";
 
@@ -43,6 +49,16 @@ Future<List<FarmerRespJModel>> load_FarmerRespJModel() async {
   return _farmers;
 }
 
+Future<List<FarmerRespJModel>> load_FarmerRespJModel_local(
+    BuildContext buildContext) async {
+  List<Mrfarmer> farmerlist =
+      await Provider.of<AppDatabase>(buildContext, listen: false)
+          .mrfarmerDao
+          .getAllMrfarmers();
+  return getIt<FarmerRespJModelConverterInterface>()
+      .getFarmerRespJModelListFromEntities(farmerlist);
+}
+
 Future<List<FarmerRespJModel>> search_FarmerRespJModel(String keyword) async {
   List<Map<String, dynamic>>? json = await JsonStore().getListLike(
     '%$keyword%',
@@ -55,4 +71,17 @@ Future<List<FarmerRespJModel>> search_FarmerRespJModel(String keyword) async {
       : [];
 
   return _farmers;
+}
+
+Future<List<FarmerRespJModel>> search_FarmerRespJModel_local(
+  String keyword,
+  BuildContext buildContext,
+) async {
+  print("keyword ${keyword}");
+  List<Mrfarmer> farmerlist =
+      await Provider.of<AppDatabase>(buildContext, listen: false)
+          .mrfarmerDao
+          .getMrfarmersByName(keyword);
+  return getIt<FarmerRespJModelConverterInterface>()
+      .getFarmerRespJModelListFromEntities(farmerlist);
 }
