@@ -71,4 +71,11 @@ class FarmerListVM {
         await farmer_dao_insertFarmerlocal(farmerRespJModel, buildContext);
     return issavedid;
   }
+
+
+  Future<bool> deleteFarmerlocal(
+      int farmerid, BuildContext buildContext) async {
+    bool isdeleted = await farmer_dao_deleteFarmerlocal(farmerid, buildContext);
+    return isdeleted;
+  }
 }

@@ -1397,11 +1397,11 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
   }
 
   _fn_on_FarmListItem_Delete_Click(
-    FarmRespJModel farmerRespJModel,
+    FarmRespJModel farmRespJModel,
     int? index,
   ) async {
     //delete  farm
-    await _farmListVM?.deleteFarmlocal(farmerRespJModel.id!, context);
+    await _farmListVM?.deleteFarmlocal(farmRespJModel.id!, context);
     _farmListVM?.fetchFarmsFromFarmerlocal(
         widget.farmerRespJModel.id!, context);
   }

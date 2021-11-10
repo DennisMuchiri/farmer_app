@@ -54,7 +54,8 @@ Future<List<FarmerRespJModel>> load_FarmerRespJModel_local(
   List<Mrfarmer> farmerlist =
       await Provider.of<AppDatabase>(buildContext, listen: false)
           .mrfarmerDao
-          .getAllMrfarmers();
+          .getMrfarmersByActive();
+  //.getAllMrfarmers();
   return getIt<FarmerRespJModelConverterInterface>()
       .getFarmerRespJModelListFromEntities(farmerlist);
 }
@@ -86,13 +87,13 @@ Future<List<FarmerRespJModel>> search_FarmerRespJModel_local(
       .getFarmerRespJModelListFromEntities(farmerlist);
 }
 
-
 Future<bool> farmer_dao_updateFarmerlocal(
-    FarmerRespJModel farmerRespJModel,
-    BuildContext buildContext,
-    ) async {
-  MrfarmersCompanion farmlisfarmtcomp = getIt<FarmerRespJModelConverterInterface>()
-      .getEntityCompFromFarmerRespJModelWId(farmerRespJModel);
+  FarmerRespJModel farmerRespJModel,
+  BuildContext buildContext,
+) async {
+  MrfarmersCompanion farmlisfarmtcomp =
+      getIt<FarmerRespJModelConverterInterface>()
+          .getEntityCompFromFarmerRespJModelWId(farmerRespJModel);
 
   bool upserted = await Provider.of<AppDatabase>(buildContext, listen: false)
       .mrfarmerDao
@@ -101,14 +102,25 @@ Future<bool> farmer_dao_updateFarmerlocal(
 }
 
 Future<int> farmer_dao_insertFarmerlocal(
-    FarmerRespJModel farmerRespJModel,
-    BuildContext buildContext,
-    ) async {
-  MrfarmersCompanion farmlisfarmtcomp = getIt<FarmerRespJModelConverterInterface>()
-      .getEntityCompFromFarmerRespJModel(farmerRespJModel);
+  FarmerRespJModel farmerRespJModel,
+  BuildContext buildContext,
+) async {
+  MrfarmersCompanion farmlisfarmtcomp =
+      getIt<FarmerRespJModelConverterInterface>()
+          .getEntityCompFromFarmerRespJModel(farmerRespJModel);
 
   int insertedid = await Provider.of<AppDatabase>(buildContext, listen: false)
       .mrfarmerDao
       .insertMrfarmersCompanion(farmlisfarmtcomp);
   return insertedid;
+}
+
+Future<bool> farmer_dao_deleteFarmerlocal(
+  int farmid,
+  BuildContext buildContext,
+) async {
+  bool isdeleted = await Provider.of<AppDatabase>(buildContext, listen: false)
+      .mrfarmerDao
+      .softdeleteMrfarmersCompanion(farmid);
+  return isdeleted;
 }
