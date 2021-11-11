@@ -103,6 +103,10 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
   NavigationDataBLoC _wd_email_Container_NavigationDataBLoC =
       NavigationDataBLoC();
 
+  //farmer
+  NavigationDataBLoC _wd_farmerRespJModel_Container_NavigationDataBLoC =
+      NavigationDataBLoC();
+
   @override
   void initState() {
     //animation
@@ -1125,81 +1129,113 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
                           const SizedBox(
                             height: 7,
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                child: Material(
-                                  color: Colors.transparent,
-                                  child: InkWell(
-                                    onTap: () {
-                                      print('add farm');
-                                      FarmRespJModel farmRespJModel =
-                                          FarmRespJModel();
-                                      farmRespJModel.farmer =
-                                          widget.farmerRespJModel.id;
-                                      _addFarm(
-                                        context,
-                                        farmRespJModel,
-                                      );
-                                    },
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(43.0),
-                                    ),
-                                    splashColor: FarmerAppTheme.lma_blue_1,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: FarmerAppTheme.lma_purple
-                                            .withOpacity(0.8),
-                                        boxShadow: <BoxShadow>[
-                                          BoxShadow(
-                                              color: FarmerAppTheme.lma_purple_2
-                                                  .withOpacity(0.4),
-                                              offset: Offset(7.0, 7.0),
-                                              blurRadius: 7.0),
-                                        ],
-                                        borderRadius: const BorderRadius.only(
-                                            topLeft: Radius.circular(3.0),
-                                            bottomLeft: Radius.circular(3.0),
-                                            bottomRight: Radius.circular(3.0),
-                                            topRight: Radius.circular(3.0)),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          top: 3,
-                                          bottom: 3,
-                                          left: 10,
-                                          right: 10,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            Text(
-                                              'Add farm',
-                                              style: TextStyle(
-                                                color: FarmerAppTheme.white,
-                                                fontFamily: FarmerAppTheme
-                                                    .font_AvenirLTStd_Medium,
+                          StreamBuilder(
+                              stream:
+                                  _wd_farmerRespJModel_Container_NavigationDataBLoC
+                                      .stream_counter,
+                              builder: (context,
+                                  AsyncSnapshot<NavigationData> snapshot) {
+                                return ((widget.farmerRespJModel.id != null
+                                    ? Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Container(
+                                            child: Material(
+                                              color: Colors.transparent,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  print('add farm');
+                                                  FarmRespJModel
+                                                      farmRespJModel =
+                                                      FarmRespJModel();
+                                                  farmRespJModel.farmer = widget
+                                                      .farmerRespJModel.id;
+                                                  _addFarm(
+                                                    context,
+                                                    farmRespJModel,
+                                                  );
+                                                },
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                  Radius.circular(43.0),
+                                                ),
+                                                splashColor:
+                                                    FarmerAppTheme.lma_blue_1,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: FarmerAppTheme
+                                                        .lma_purple
+                                                        .withOpacity(0.8),
+                                                    boxShadow: <BoxShadow>[
+                                                      BoxShadow(
+                                                          color: FarmerAppTheme
+                                                              .lma_purple_2
+                                                              .withOpacity(0.4),
+                                                          offset:
+                                                              Offset(7.0, 7.0),
+                                                          blurRadius: 7.0),
+                                                    ],
+                                                    borderRadius:
+                                                        const BorderRadius.only(
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    3.0),
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    3.0),
+                                                            bottomRight:
+                                                                Radius.circular(
+                                                                    3.0),
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    3.0)),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      top: 3,
+                                                      bottom: 3,
+                                                      left: 10,
+                                                      right: 10,
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          'Add farm',
+                                                          style: TextStyle(
+                                                            color:
+                                                                FarmerAppTheme
+                                                                    .white,
+                                                            fontFamily:
+                                                                FarmerAppTheme
+                                                                    .font_AvenirLTStd_Medium,
+                                                          ),
+                                                        ),
+                                                        Icon(
+                                                          Icons.add,
+                                                          size: 17,
+                                                          color: FarmerAppTheme
+                                                              .white,
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                            Icon(
-                                              Icons.add,
-                                              size: 17,
-                                              color: FarmerAppTheme.white,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                                          ),
+                                        ],
+                                      )
+                                    : invisibleWidget()));
+                              }),
                         ],
                       ),
                     ),
@@ -1469,6 +1505,8 @@ class _FarmerCreateEditScreenState extends State<FarmerCreateEditScreen>
             FarmerAppTheme.green,
           );
           widget.farmerRespJModel.id = genid;
+          refresh_WO_Data_NavigationDataBLoC(
+              _wd_farmerRespJModel_Container_NavigationDataBLoC);
         } else {
           showSnackbarWBgCol(
             'Saving failed',

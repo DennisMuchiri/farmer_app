@@ -28,3 +28,13 @@ refresh_W_Data_IsValid_NavigationDataBLoC(
         .add(NavigationDataAddedEvent(navigationData));
   }
 }
+
+refresh_WO_Data_NavigationDataBLoC(
+  NavigationDataBLoC navigationDataBLoC,
+) {
+  if (navigationDataBLoC != null) {
+    NavigationData navigationData = NavigationData();
+    navigationDataBLoC.dailySubTaskimages_event_sink
+        .add(NavigationDataAddedEvent(navigationData));
+  }
+}
