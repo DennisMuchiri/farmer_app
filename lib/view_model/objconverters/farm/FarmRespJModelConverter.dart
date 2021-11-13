@@ -5,6 +5,8 @@ import 'package:moor/moor.dart' as moor;
 
 import 'FarmRespJModelConverterInterface.dart';
 
+const dev = Environment('dev');
+@dev
 @Injectable(as: FarmRespJModelConverterInterface)
 class FarmRespJModelConverter implements FarmRespJModelConverterInterface {
   @override
