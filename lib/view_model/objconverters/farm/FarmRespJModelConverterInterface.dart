@@ -14,5 +14,7 @@ abstract class FarmRespJModelConverterInterface {
   List<MrfarmsCompanion> getEntitiesCompFromFarmRespJModelList(
       List<FarmRespJModel> farmRespJModelList);
 
+   String gg();
+
 
 }
